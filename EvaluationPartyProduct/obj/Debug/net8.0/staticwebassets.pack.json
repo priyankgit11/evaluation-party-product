@@ -1,0 +1,77 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\create.css",
+      "PackagePath": "staticwebassets\\Party\\create.css"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\create.html",
+      "PackagePath": "staticwebassets\\Party\\create.html"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\create.js",
+      "PackagePath": "staticwebassets\\Party\\create.js"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\delete.html",
+      "PackagePath": "staticwebassets\\Party\\delete.html"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\edit.html",
+      "PackagePath": "staticwebassets\\Party\\edit.html"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\index.css",
+      "PackagePath": "staticwebassets\\Party\\index.css"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\index.html",
+      "PackagePath": "staticwebassets\\Party\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\index.js",
+      "PackagePath": "staticwebassets\\Party\\index.js"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\create.css",
+      "PackagePath": "staticwebassets\\Product\\create.css"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\create.html",
+      "PackagePath": "staticwebassets\\Product\\create.html"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\create.js",
+      "PackagePath": "staticwebassets\\Product\\create.js"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\index.css",
+      "PackagePath": "staticwebassets\\Product\\index.css"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\index.html",
+      "PackagePath": "staticwebassets\\Product\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\index.js",
+      "PackagePath": "staticwebassets\\Product\\index.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.EvaluationPartyProduct.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.EvaluationPartyProduct.props",
+      "PackagePath": "build\\EvaluationPartyProduct.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.EvaluationPartyProduct.props",
+      "PackagePath": "buildMultiTargeting\\EvaluationPartyProduct.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.EvaluationPartyProduct.props",
+      "PackagePath": "buildTransitive\\EvaluationPartyProduct.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
