@@ -9,19 +9,11 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = EvaluationPartyProduct
 build_property.RootNamespace = EvaluationPartyProduct
-<<<<<<< HEAD
 build_property.ProjectDir = D:\Computer\Company\EvaluationPartyProduct\EvaluationPartyProduct\
-=======
-build_property.ProjectDir = D:\Tutorials\c#\evaluation-party-product\EvaluationPartyProduct\
->>>>>>> 0e9d80370640180fffd6a6f29db61ee75eb86f20
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-<<<<<<< HEAD
 build_property.MSBuildProjectDirectory = D:\Computer\Company\EvaluationPartyProduct\EvaluationPartyProduct
-=======
-build_property.MSBuildProjectDirectory = D:\Tutorials\c#\evaluation-party-product\EvaluationPartyProduct
->>>>>>> 0e9d80370640180fffd6a6f29db61ee75eb86f20
 build_property._RazorSourceGeneratorDebug = 
