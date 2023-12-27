@@ -28,12 +28,12 @@ namespace EvaluationPartyProduct.Controllers
             return partiesDTO;
         }
         [HttpGet("{id:int}", Name = "getParty")]
-        public async Task<ActionResult<PartyCreationDTO>> Get(int id)
+        public async Task<ActionResult<PartyDTO>> Get(int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var party = await context.TblParties.FirstOrDefaultAsync(x => x.Id == id);
             if (party == null) return NoContent();
-            var partyDTO = mapper.Map<PartyCreationDTO>(party);
+            var partyDTO = mapper.Map<PartyDTO>(party);
             return Ok(partyDTO);
         }
         [HttpPost]
@@ -58,9 +58,6 @@ namespace EvaluationPartyProduct.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] PartyCreationDTO partyCreation)
         {
-            var testParty = await context.TblParties.FirstOrDefaultAsync(i => i.Id == id);
-            if(testParty == null || !ModelState.IsValid)
-                return BadRequest(ModelState);
             var party = mapper.Map<TblParty>(partyCreation);
             party.Id = id;
             context.Entry(party).State = EntityState.Modified;

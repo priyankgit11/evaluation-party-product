@@ -14,7 +14,7 @@ namespace EvaluationPartyProduct.Controllers
     public class ProductRateController : ControllerBase
     {
         private readonly IMapper mapper;
-        public EvaluationDbContext context { get; }
+        public EvaluationDbContext context { get; set; }
 
         public ProductRateController(EvaluationDbContext context, IMapper mapper)
         {
@@ -66,7 +66,7 @@ namespace EvaluationPartyProduct.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] ProductRateCreationDTO productRateCreation)
         {
-            var productRate = mapper.Map<TblProduct>(productRateCreation);
+            var productRate = mapper.Map<TblProductRate>(productRateCreation);
             productRate.Id = id;
             context.Entry(productRate).State = EntityState.Modified;
             await context.SaveChangesAsync();

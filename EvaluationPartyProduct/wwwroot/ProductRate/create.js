@@ -1,26 +1,26 @@
 "use strict";
 // SELECTING ELEMENTS
 const createBtn = document.querySelector(".create-btn");
-const txtProduct = document.querySelector(".txtProduct");
+const optProduct = document.getElementById("optProduct");
+const txtRate = document.getElementById("txtRate");
 
 var editID;
 // ADDING EVENT LISTENERS
 createBtn.addEventListener("click", () => {
   const data = collectData();
-  console.log(Number.isInteger(editID) && !(editID === null));
+  console.log(data);
   if (Number.isInteger(editID) && !(editID === null))
-    updateJson(
-      `${origin}/api/Product/${editID}`,
-      "Cannot Edit Product Name",
-      data
-    );
-  else postJson(`${origin}/api/Product`, "Cannot Add Product Name", data);
-  window.location.href = "../Product/Index.html";
+    updateJson(`${origin}/api/ProductRate/${editID}`, "Cannot Edit ", data);
+  else postJson(`${origin}/api/ProductRate`, "Cannot Add ", data);
+  window.location.href = "/ProductRate/Index.html";
 });
+
+// optParty.addEventListener("change");
 
 //  FUNCTIONS
 const postJson = function (url, errMsg = "Something went wrong", data) {
   console.log("Hello");
+  console.log(JSON.stringify(data));
   return fetch(url, {
     method: "POST",
     body: JSON.stringify(data),
@@ -35,7 +35,14 @@ const postJson = function (url, errMsg = "Something went wrong", data) {
     .catch((err) => console.log(err));
 };
 
-const getProductByIdJson = function (url, errMsg = "Something went wrong") {
+const getJson = function (url, errMsg = "Something went wrong") {
+  return fetch(url).then((response) => {
+    if (!response.ok) throw new Error(`${errMsg} (${response.status})`);
+    return response.json();
+  });
+};
+
+const getPartyByIdJson = function (url, errMsg = "Something went wrong") {
   return fetch(url).then((response) => {
     if (!response.ok) throw new Error(`${errMsg} (${response.status})`);
     return response.json();
@@ -56,26 +63,48 @@ const updateJson = function (url, errMsg = "Something went wrong", data) {
 };
 
 const collectData = function () {
-  if (String(txtProduct.value).trim().length === 0) return;
   const data = {
-    productName: String(txtProduct.value).trim(),
+    productId: parseInt(optProduct.value),
+    rate: parseFloat(txtRate.value),
   };
   return data;
+};
+
+const populate = function () {
+  //   let partyHtml = "";
+  //   let productHtml = "";
+  getJson(`${origin}/api/Product`).then((data) => {
+    console.log(data);
+    data.map((ele) => {
+      optProduct.insertAdjacentHTML(
+        "beforeend",
+        `
+        <option value="${ele.id}">${ele.productName}</option>
+    `
+      );
+    });
+  });
+  //   optParty.insertAdjacentHTML("beforeend", partyHtml);
+  //   optProduct.insertAdjacentHTML("beforeend", productHtml);
 };
 
 const decide = function () {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
+  //populate data first
+  populate();
+  //now keep editing elements selected
   if (urlParams.has("id")) {
     editID = parseInt(urlParams.get("id"));
-    createBtn.innerHTML = "Edit Product";
-    getProductByIdJson(`${origin}/api/Product/${editID}`, "Cannot Edit Product")
+    createBtn.innerHTML = "Edit";
+    getPartyByIdJson(`${origin}/api/ProductRate/${editID}`, "Cannot Find Rate ")
       .then((data) => {
         if (data.length === 0) {
           modal.style.display = "none";
-          throw new Error("No Product Found");
+          throw new Error("No Rate Found");
         }
-        txtProduct.value = `${data.productName}`;
+        optProduct.value = data.productId;
+        txtRate.value = data.rate;
       })
       .catch((err) => console.log(err));
   }

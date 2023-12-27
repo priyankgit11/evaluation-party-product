@@ -24,8 +24,8 @@ namespace EvaluationPartyProduct
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                //app.UseSwagger();
-                //app.UseSwaggerUI();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -35,7 +35,6 @@ namespace EvaluationPartyProduct
 
             app.UseAuthorization();
 
-            app.MapRazorPages();
 
             app.MapControllers();
 
