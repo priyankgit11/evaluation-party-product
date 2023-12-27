@@ -60,7 +60,7 @@ namespace EvaluationPartyProduct.Controllers
             context.TblAssignParties.Add(assignParty);
             await context.SaveChangesAsync();
             var productRateDTO = mapper.Map<AssignPartyRelationDTO>(assignParty);
-            return new CreatedAtRouteResult("getRate", new { Id = productRateDTO.Id }, productRateDTO);
+            return new CreatedAtRouteResult("getAssignParty", new { Id = productRateDTO.Id }, productRateDTO);
         }
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)

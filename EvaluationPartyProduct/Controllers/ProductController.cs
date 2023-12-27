@@ -28,12 +28,12 @@ namespace EvaluationPartyProduct.Controllers
             return productsDTO ;
         }
         [HttpGet("{id:int}", Name = "getProduct")]
-        public async Task<ActionResult<ProductCreationDTO>> Get(int id)
+        public async Task<ActionResult<ProductDTO>> Get(int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var products = await context.TblProducts.FirstOrDefaultAsync(x => x.Id == id);
             if (products == null) return NoContent();
-            var productsDTO = mapper.Map<ProductCreationDTO>(products);
+            var productsDTO = mapper.Map<ProductDTO>(products);
             return Ok(productsDTO);
         }
         [HttpPost]
@@ -46,7 +46,7 @@ namespace EvaluationPartyProduct.Controllers
             var productDTO = mapper.Map<PartyDTO>(product);
             return new CreatedAtRouteResult("getParty", new {Id = productDTO.Id},productDTO);
         }
-        [HttpDelete("${id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             var products = await context.TblProducts.FirstOrDefaultAsync(i => i.Id == id);
@@ -55,12 +55,9 @@ namespace EvaluationPartyProduct.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
-        [HttpPut("${id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] ProductCreationDTO productCreation)
         {
-            var testProduct = await context.TblParties.FirstOrDefaultAsync(i => i.Id == id);
-            if(testProduct == null || !ModelState.IsValid)
-                return BadRequest(ModelState);
             var product = mapper.Map<TblProduct>(productCreation);
             product.Id = id;
             context.Entry(product).State = EntityState.Modified;

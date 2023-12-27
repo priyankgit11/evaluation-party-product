@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Party List</title>
-    <link rel="stylesheet" href="index.css" />
+    <title>Assign Party Create</title>
+    <link rel="stylesheet" href="create.css" />
   </head>
-  <body>
+  <body onload="decide()">
     <div class="header">
       <div class="container">
         <div class="header-heading">
@@ -25,17 +25,24 @@
     </div>
     <div class="content">
       <div class="container">
-        <button class="btn create-btn">Add New Party</button>
-        <table>
-          <tr>
-            <th>ID</th>
-            <th>Party Name</th>
-            <th>Actions</th>
-          </tr>
-          <tbody class="party-tbl"></tbody>
-        </table>
+        <div class="forms">
+          <div class="form">
+            <div class="form-title">Party</div>
+            <div class="form-data">
+              <select name="parties" id="optParty"></select>
+            </div>
+          </div>
+          <div class="form">
+            <div class="form-title">Product</div>
+            <div class="form-data">
+              <select name="products" id="optProduct"></select>
+            </div>
+          </div>
+        </div>
+        <button class="btn create-btn">Add</button>
       </div>
     </div>
   </body>
-  <script src="index.js"></script>
+  <script async src="create.js"></script>
+  <script></script>
 </html>

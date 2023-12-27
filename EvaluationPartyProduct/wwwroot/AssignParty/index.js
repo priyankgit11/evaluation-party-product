@@ -1,13 +1,16 @@
 "use strict";
 // SELECTING ELEMENTS
 const createBtn = document.querySelector(".create-btn");
-const table = document.querySelector(".product-tbl");
+const table = document.querySelector(".party-tbl");
 // const modal = document.querySelector(".modal");
 // const closeBtn = document.querySelector(".close");
-const txtProduct = document.querySelector(".modtxtProduct");
-// const updateBtn = document.querySelector(".update-btn");
+// const txtParty = document.querySelector(".modtxtParty");
+// const updateBtn = document.querySelector(".sure-btn");
 
 ////// ADDING EVENT LISTENERS
+createBtn.addEventListener("click", () => {
+  window.location.href = "create.html";
+});
 //Modal close button
 // closeBtn.addEventListener("click", () => {
 //   modal.style.display = "none";
@@ -17,16 +20,17 @@ const txtProduct = document.querySelector(".modtxtProduct");
 //   if (e.target == modal) modal.style.display = "none";
 // });
 // updateBtn.addEventListener("click", () => {
-//   console.log(String(txtProduct.value).trim());
+//   console.log(String(txtParty.value).trim());
 //   const data = {
-//     partyName: String(txtProduct.value).trim(),
+//     partyName: String(txtParty.value).trim(),
 //   };
-//   updateProductById(
-//     `${origin}/api/Product/$${updateid}`,
-//     "Cannot Update Product",
+//   updatePartyById(
+//     `${origin}/api/Party/$${updateid}`,
+//     "Cannot Update Party",
 //     data
 //   );
-//   window.location.pathname = "/Product/index.html";
+
+//   window.location.pathname = "/Party/index.html";
 // });
 
 /////////////// FUNCTIONS
@@ -36,6 +40,7 @@ const getJson = function (url, errMsg = "Something went wrong") {
     return response.json();
   });
 };
+
 const deleteJson = function (url, errMsg = "Something went wrong") {
   return fetch(url, {
     method: "DELETE",
@@ -44,17 +49,13 @@ const deleteJson = function (url, errMsg = "Something went wrong") {
     return response.json();
   });
 };
-// const getProductByJson = function (url, errMsg = "Something went wrong") {
+// const getPartyByIdJson = function (url, errMsg = "Something went wrong") {
 //   return fetch(url).then((response) => {
 //     if (!response.ok) throw new Error(`${errMsg} (${response.status})`);
 //     return response.json();
 //   });
 // };
-// const updateProductById = function (
-//   url,
-//   errMsg = "Something went wrong",
-//   data
-// ) {
+// const updatePartyById = function (url, errMsg = "Something went wrong", data) {
 //   return fetch(url, {
 //     method: "PUT",
 //     body: JSON.stringify(data),
@@ -67,27 +68,29 @@ const deleteJson = function (url, errMsg = "Something went wrong") {
 //   });
 // };
 
-const showProduct = function () {
+const showAssignParty = function () {
   table.innerHTML = "";
   const origin = window.location.origin;
-  getJson(`${origin}/api/Product`)
+  getJson(`${origin}/api/AssignParty`)
     .then((data) => {
       if (data.length == 0) table.style.display = "none";
       data.forEach((ele) => {
         table.insertAdjacentHTML(
           "beforeend",
           `
-          <tr>
-            <td>${ele.id}</td>
-            <td>${ele.productName}</td>
-            <td>
-              <button onclick="passToEdit(${ele.id})" class="btn edit-btn">Edit</button>
-              <button onclick="passToDelete(${ele.id})" class="btn delete-btn">Delete</button>
-            </td>
-          </tr>
-        `
+            <tr>
+              <td>${ele.id}</td>
+              <td>${ele.partyName}</td>
+              <td>${ele.productName}</td>
+              <td>
+                <button onclick="passToEdit(${ele.id})" class="btn edit-btn">Edit</button>
+                <button onclick="passToDelete(${ele.id})" class="btn delete-btn">Delete</button>
+              </td>
+            </tr>
+          `
         );
       });
+      return data;
     })
     .catch((err) => console.log(err));
 };
@@ -95,21 +98,21 @@ const showProduct = function () {
 function passToEdit(id) {
   // modal.style.display = "flex";
   window.location.href = `create.html?id=${id}`;
-  // getProductByJson(`${origin}/api/Product/${id}`, "Cannot Edit Product")
+  // getPartyByIdJson(`${origin}/api/Party/${id}`, "Cannot Edit Party")
   //   .then((data) => {
   //     if (data.length === 0) {
   //       modal.style.display = "none";
-  //       throw new Error("No Product Found");
+  //       throw new Error("No Party Found");
   //     }
-  //     txtProduct.value = `${data.productName}`;
+  //     txtParty.value = `${data.partyName}`;
   //     console.log(data.id);
   //     updateid = data.id;
   //   })
   //   .catch((err) => console.log(err));
 }
 function passToDelete(id) {
-  if (confirm(`Are you sure you want to delete this Product?`)) {
-    deleteJson(`${origin}/api/Product/${id}`, "Cannot Delete Product").catch(
+  if (confirm(`Are you sure you want to delete ?`)) {
+    deleteJson(`${origin}/api/AssignParty/${id}`, "Cannot Delete Record").catch(
       (err) => console.log(err)
     );
     window.location.href = "index.html";
@@ -117,10 +120,7 @@ function passToDelete(id) {
 }
 //INIT FUNCTION
 const init = function () {
-  createBtn.addEventListener("click", () => {
-    window.location.href = "create.html";
-  });
-  showProduct();
+  showAssignParty();
 };
 
 //CALLING FUNCTIONS

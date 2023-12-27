@@ -2,32 +2,33 @@
 // SELECTING ELEMENTS
 const createBtn = document.querySelector(".create-btn");
 const table = document.querySelector(".party-tbl");
-const modal = document.querySelector(".modal");
-const closeBtn = document.querySelector(".close");
-const txtParty = document.querySelector(".modtxtParty");
-const updateBtn = document.querySelector(".update-btn");
+// const modal = document.querySelector(".modal");
+// const closeBtn = document.querySelector(".close");
+// const txtParty = document.querySelector(".modtxtParty");
+// const updateBtn = document.querySelector(".sure-btn");
 
-var updateid = 0;
 ////// ADDING EVENT LISTENERS
-closeBtn.addEventListener("click", () => {
-  modal.style.display = "none";
-});
-window.addEventListener("click", (e) => {
-  if (e.target == modal) modal.style.display = "none";
-});
-updateBtn.addEventListener("click", () => {
-  console.log(String(txtParty.value).trim());
-  const data = {
-    partyName: String(txtParty.value).trim(),
-  };
-  updatePartyById(
-    `${origin}/api/Party/$${updateid}`,
-    "Cannot Update Party",
-    data
-  );
+//Modal close button
+// closeBtn.addEventListener("click", () => {
+//   modal.style.display = "none";
+// });
+//Clicks anywhere except modal then close modal
+// window.addEventListener("click", (e) => {
+//   if (e.target == modal) modal.style.display = "none";
+// });
+// updateBtn.addEventListener("click", () => {
+//   console.log(String(txtParty.value).trim());
+//   const data = {
+//     partyName: String(txtParty.value).trim(),
+//   };
+//   updatePartyById(
+//     `${origin}/api/Party/$${updateid}`,
+//     "Cannot Update Party",
+//     data
+//   );
 
-  window.location.pathname = "/Party/index.html";
-});
+//   window.location.pathname = "/Party/index.html";
+// });
 
 /////////////// FUNCTIONS
 const getJson = function (url, errMsg = "Something went wrong") {
@@ -44,24 +45,24 @@ const deleteJson = function (url, errMsg = "Something went wrong") {
     return response.json();
   });
 };
-const getPartyByIdJson = function (url, errMsg = "Something went wrong") {
-  return fetch(url).then((response) => {
-    if (!response.ok) throw new Error(`${errMsg} (${response.status})`);
-    return response.json();
-  });
-};
-const updatePartyById = function (url, errMsg = "Something went wrong", data) {
-  return fetch(url, {
-    method: "PUT",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-type": "application/json-patch+json",
-    },
-  }).then((response) => {
-    if (!response.ok) throw new Error(`${errMsg} (${response.status})`);
-    return response.json();
-  });
-};
+// const getPartyByIdJson = function (url, errMsg = "Something went wrong") {
+//   return fetch(url).then((response) => {
+//     if (!response.ok) throw new Error(`${errMsg} (${response.status})`);
+//     return response.json();
+//   });
+// };
+// const updatePartyById = function (url, errMsg = "Something went wrong", data) {
+//   return fetch(url, {
+//     method: "PUT",
+//     body: JSON.stringify(data),
+//     headers: {
+//       "Content-type": "application/json-patch+json",
+//     },
+//   }).then((response) => {
+//     if (!response.ok) throw new Error(`${errMsg} (${response.status})`);
+//     return response.json();
+//   });
+// };
 
 const showParty = function () {
   table.innerHTML = "";
@@ -89,29 +90,32 @@ const showParty = function () {
 };
 
 function passToEdit(id) {
-  modal.style.display = "flex";
-  getPartyByIdJson(`${origin}/api/Party/${id}`, "Cannot Edit Party")
-    .then((data) => {
-      if (data.length === 0) {
-        modal.style.display = "none";
-        throw new Error("No Party Found");
-      }
-      txtParty.value = `${data.partyName}`;
-      console.log(data.id);
-      updateid = data.id;
-    })
-    .catch((err) => console.log(err));
+  // modal.style.display = "flex";
+  window.location.href = `create.html?id=${id}`;
+  // getPartyByIdJson(`${origin}/api/Party/${id}`, "Cannot Edit Party")
+  //   .then((data) => {
+  //     if (data.length === 0) {
+  //       modal.style.display = "none";
+  //       throw new Error("No Party Found");
+  //     }
+  //     txtParty.value = `${data.partyName}`;
+  //     console.log(data.id);
+  //     updateid = data.id;
+  //   })
+  //   .catch((err) => console.log(err));
 }
 function passToDelete(id) {
-  deleteJson(`${origin}/api/Party/${id}`, "Cannot Delete Party").catch((err) =>
-    console.log(err)
-  );
-  window.location.pathname = "/Party/index.html";
+  if (confirm(`Are you sure you want to delete this Party?`)) {
+    deleteJson(`${origin}/api/Party/${id}`, "Cannot Delete Party").catch(
+      (err) => console.log(err)
+    );
+    window.location.href = "index.html";
+  }
 }
 //INIT FUNCTION
 const init = function () {
   createBtn.addEventListener("click", () => {
-    window.location.pathname = "/Party/create.html";
+    window.location.href = "create.html";
   });
   showParty();
 };

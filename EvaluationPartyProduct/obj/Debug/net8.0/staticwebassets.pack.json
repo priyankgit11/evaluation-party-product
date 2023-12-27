@@ -1,59 +1,99 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\create.css",
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\AssignParty\\create.css",
+      "PackagePath": "staticwebassets\\AssignParty\\create.css"
+    },
+    {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\AssignParty\\create.html",
+      "PackagePath": "staticwebassets\\AssignParty\\create.html"
+    },
+    {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\AssignParty\\create.js",
+      "PackagePath": "staticwebassets\\AssignParty\\create.js"
+    },
+    {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\AssignParty\\index.css",
+      "PackagePath": "staticwebassets\\AssignParty\\index.css"
+    },
+    {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\AssignParty\\index.html",
+      "PackagePath": "staticwebassets\\AssignParty\\index.html"
+    },
+    {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\AssignParty\\index.js",
+      "PackagePath": "staticwebassets\\AssignParty\\index.js"
+    },
+    {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\create.css",
       "PackagePath": "staticwebassets\\Party\\create.css"
     },
     {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\create.html",
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\create.html",
       "PackagePath": "staticwebassets\\Party\\create.html"
     },
     {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\create.js",
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\create.js",
       "PackagePath": "staticwebassets\\Party\\create.js"
     },
     {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\delete.html",
-      "PackagePath": "staticwebassets\\Party\\delete.html"
-    },
-    {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\edit.html",
-      "PackagePath": "staticwebassets\\Party\\edit.html"
-    },
-    {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\index.css",
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\index.css",
       "PackagePath": "staticwebassets\\Party\\index.css"
     },
     {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\index.html",
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\index.html",
       "PackagePath": "staticwebassets\\Party\\index.html"
     },
     {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\index.js",
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\index.js",
       "PackagePath": "staticwebassets\\Party\\index.js"
     },
     {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\create.css",
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\ProductRate\\create.css",
+      "PackagePath": "staticwebassets\\ProductRate\\create.css"
+    },
+    {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\ProductRate\\create.html",
+      "PackagePath": "staticwebassets\\ProductRate\\create.html"
+    },
+    {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\ProductRate\\create.js",
+      "PackagePath": "staticwebassets\\ProductRate\\create.js"
+    },
+    {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\ProductRate\\index.css",
+      "PackagePath": "staticwebassets\\ProductRate\\index.css"
+    },
+    {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\ProductRate\\index.html",
+      "PackagePath": "staticwebassets\\ProductRate\\index.html"
+    },
+    {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\ProductRate\\index.js",
+      "PackagePath": "staticwebassets\\ProductRate\\index.js"
+    },
+    {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Product\\create.css",
       "PackagePath": "staticwebassets\\Product\\create.css"
     },
     {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\create.html",
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Product\\create.html",
       "PackagePath": "staticwebassets\\Product\\create.html"
     },
     {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\create.js",
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Product\\create.js",
       "PackagePath": "staticwebassets\\Product\\create.js"
     },
     {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\index.css",
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Product\\index.css",
       "PackagePath": "staticwebassets\\Product\\index.css"
     },
     {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\index.html",
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Product\\index.html",
       "PackagePath": "staticwebassets\\Product\\index.html"
     },
     {
-      "Id": "C:\\Users\\priya\\source\\repos\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\index.js",
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Product\\index.js",
       "PackagePath": "staticwebassets\\Product\\index.js"
     },
     {
