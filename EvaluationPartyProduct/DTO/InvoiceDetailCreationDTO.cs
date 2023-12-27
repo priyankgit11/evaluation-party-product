@@ -1,6 +1,6 @@
 ﻿namespace EvaluationPartyProduct.DTO
 {
-    public class InvoiceDetailCreation
+    public class InvoiceDetailCreationDTO
     {
         public int Id { get; set; }
         public int InvoiceId { get; set; }
