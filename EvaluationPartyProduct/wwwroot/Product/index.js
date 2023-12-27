@@ -112,13 +112,13 @@ function passToDelete(id) {
     deleteJson(`${origin}/api/Product/${id}`, "Cannot Delete Product").catch(
       (err) => console.log(err)
     );
-    window.location.href = "index.html";
+    window.location.reload();
   }
 }
 //INIT FUNCTION
 const init = function () {
   createBtn.addEventListener("click", () => {
-    window.location.href = "create.html";
+    window.location.href = "index.html";
   });
   showProduct();
 };

@@ -10,7 +10,7 @@ createBtn.addEventListener("click", () => {
   if (Number.isInteger(editID) && !(editID === null))
     updateJson(`${origin}/api/Party/${editID}`, "Cannot Edit Party Name", data);
   else postJson(`${origin}/api/Party`, "Cannot Add Party Name", data);
-  window.location.href = "../Party/Index.html";
+  // window.location.href = "../Party/Index.html";
 });
 
 //  FUNCTIONS

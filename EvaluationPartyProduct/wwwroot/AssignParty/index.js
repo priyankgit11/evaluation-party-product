@@ -115,7 +115,7 @@ function passToDelete(id) {
     deleteJson(`${origin}/api/AssignParty/${id}`, "Cannot Delete Record").catch(
       (err) => console.log(err)
     );
-    window.location.href = "index.html";
+    window.location.reload();
   }
 }
 //INIT FUNCTION

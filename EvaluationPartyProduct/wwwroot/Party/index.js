@@ -109,7 +109,7 @@ function passToDelete(id) {
     deleteJson(`${origin}/api/Party/${id}`, "Cannot Delete Party").catch(
       (err) => console.log(err)
     );
-    window.location.href = "index.html";
+    window.location.reload();
   }
 }
 //INIT FUNCTION
