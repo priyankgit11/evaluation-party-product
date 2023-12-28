@@ -2,10 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Assign Party Create</title>
-    <link rel="stylesheet" href="create.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice List</title>
+    <link rel="stylesheet" href="index.css" />
   </head>
-  <body onload="decide()">
+  <body>
     <div class="header">
       <div class="container">
         <div class="header-heading">
@@ -28,24 +29,19 @@
     </div>
     <div class="content">
       <div class="container">
-        <div class="forms">
-          <div class="form">
-            <div class="form-title">Party</div>
-            <div class="form-data">
-              <select name="parties" id="optParty"></select>
-            </div>
-          </div>
-          <div class="form">
-            <div class="form-title">Product</div>
-            <div class="form-data">
-              <select name="products" id="optProduct"></select>
-            </div>
-          </div>
-        </div>
         <button class="btn create-btn">Add</button>
+        <table>
+          <tr>
+            <th>ID</th>
+            <th>Party Name</th>
+            <th>Date</th>
+            <th>Grand Total</th>
+            <th>Actions</th>
+          </tr>
+          <tbody class="party-tbl"></tbody>
+        </table>
       </div>
     </div>
   </body>
-  <script src="create.js"></script>
-  <script></script>
+  <script src="index.js"></script>
 </html>

@@ -21,7 +21,7 @@ namespace EvaluationPartyProduct.Controllers
             this.mapper = mapper;
         }
 
-        public async void CalculateGrandTotals(List<InvoiceDTO> invoiceDTO)
+        public async Task CalculateGrandTotals(List<InvoiceDTO> invoiceDTO)
         {
             foreach (var item in invoiceDTO)
             {
@@ -68,7 +68,7 @@ namespace EvaluationPartyProduct.Controllers
 
             var invoices = await query.ToListAsync();
             var invoicesDTO = mapper.Map<List<InvoiceDTO>>(invoices);
-            CalculateGrandTotals(invoicesDTO);
+            await CalculateGrandTotals(invoicesDTO);
             return Ok(invoicesDTO);
         }
 
@@ -97,7 +97,7 @@ namespace EvaluationPartyProduct.Controllers
 
             var invoices = await query.ToListAsync();
             var invoicesDTO = mapper.Map<List<InvoiceDTO>>(invoices);
-            CalculateGrandTotals(invoicesDTO);
+            await CalculateGrandTotals(invoicesDTO);
             return Ok(invoicesDTO);
         }
 
