@@ -63,26 +63,33 @@
     </nav>
     <!-- Content -->
     <div class="container mt-5">
-      <div class="main-body d-flex justify-content-between">
-        <h1 class="body-title">Party List</h1>
-        <a href="create.html">
-          <button type="button" class="btn btn-xs btn-orange btnAdd">
-            Add Party
-          </button>
-        </a>
-      </div>
-      <hr />
       <div class="container">
-        <table width="100%" id="dtExample" class="display" cellspacing="0">
-          <thead>
-            <tr></tr>
-          </thead>
-        </table>
+        <div class="form-container">
+          <h2 class="form-title">Add Party</h2>
+          <form id="partyForm">
+            <div class="form-group">
+              <div class="form-title">
+                <label for="partyName">Party Name</label>
+              </div>
+              <div class="form-field">
+                <input
+                  type="text"
+                  class="form-control d-inline-flex"
+                  id="partyName"
+                  placeholder="Enter party name"
+                  required
+                />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Party</button>
+            <a href="index.html"
+              ><button class="btn btn-secondary">Cancel</button></a
+            >
+          </form>
+        </div>
       </div>
     </div>
   </body>
-  <!-- Bootstrap JS -->
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "EPRySoe7Ybo8mDjhxTbse90WzJ2wdErWrUdLfwgYKOE=",
+  "Hash": "KzPCLo8x9eifAmubPVr5YDcS9Uyrva3ddr1l+F6c4Ao=",
   "Source": "EvaluationPartyProduct",
   "BasePath": "_content/EvaluationPartyProduct",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "EvaluationPartyProduct\\wwwroot",
       "Source": "EvaluationPartyProduct",
-      "ContentRoot": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\",
+      "ContentRoot": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\",
       "BasePath": "_content/EvaluationPartyProduct",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\AssignParty\\index.html",
+      "Identity": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\AssignParty\\index.html",
       "SourceId": "EvaluationPartyProduct",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\",
+      "ContentRoot": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\",
       "BasePath": "_content/EvaluationPartyProduct",
       "RelativePath": "AssignParty/index.html",
       "AssetKind": "All",
@@ -36,10 +36,10 @@
       "OriginalItemSpec": "wwwroot\\AssignParty\\index.html"
     },
     {
-      "Identity": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Invoice\\index.html",
+      "Identity": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Invoice\\index.html",
       "SourceId": "EvaluationPartyProduct",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\",
+      "ContentRoot": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\",
       "BasePath": "_content/EvaluationPartyProduct",
       "RelativePath": "Invoice/index.html",
       "AssetKind": "All",
@@ -55,10 +55,10 @@
       "OriginalItemSpec": "wwwroot\\Invoice\\index.html"
     },
     {
-      "Identity": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\index.css",
+      "Identity": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\index.css",
       "SourceId": "EvaluationPartyProduct",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\",
+      "ContentRoot": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\",
       "BasePath": "_content/EvaluationPartyProduct",
       "RelativePath": "Party/index.css",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot\\Party\\index.css"
     },
     {
-      "Identity": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\index.html",
+      "Identity": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\index.html",
       "SourceId": "EvaluationPartyProduct",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\",
+      "ContentRoot": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\",
       "BasePath": "_content/EvaluationPartyProduct",
       "RelativePath": "Party/index.html",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot\\Party\\index.html"
     },
     {
-      "Identity": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\index.js",
+      "Identity": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\index.js",
       "SourceId": "EvaluationPartyProduct",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\",
+      "ContentRoot": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\",
       "BasePath": "_content/EvaluationPartyProduct",
       "RelativePath": "Party/index.js",
       "AssetKind": "All",
@@ -112,10 +112,29 @@
       "OriginalItemSpec": "wwwroot\\Party\\index.js"
     },
     {
-      "Identity": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\index.html",
+      "Identity": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\test.html",
       "SourceId": "EvaluationPartyProduct",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\",
+      "ContentRoot": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\",
+      "BasePath": "_content/EvaluationPartyProduct",
+      "RelativePath": "Party/test.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Party\\test.html"
+    },
+    {
+      "Identity": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Product\\index.html",
+      "SourceId": "EvaluationPartyProduct",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\",
       "BasePath": "_content/EvaluationPartyProduct",
       "RelativePath": "Product/index.html",
       "AssetKind": "All",
@@ -131,10 +150,10 @@
       "OriginalItemSpec": "wwwroot\\Product\\index.html"
     },
     {
-      "Identity": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\ProductRate\\index.html",
+      "Identity": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\ProductRate\\index.html",
       "SourceId": "EvaluationPartyProduct",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\",
+      "ContentRoot": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\",
       "BasePath": "_content/EvaluationPartyProduct",
       "RelativePath": "ProductRate/index.html",
       "AssetKind": "All",

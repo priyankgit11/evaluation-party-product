@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- Include jQuery -->
+  </head>
+
+  <body>
+    <table id="data-table">
+      <!-- Table content will be dynamically generated here -->
+    </table>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Include DataTables CSS and JS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        $("#data-table").DataTable({
+          ajax: {
+            url: `https://localhost:7239/api/Party`,
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json",
+          },
+          columns: [
+            { title: "id", data: "id" },
+            { title: "partyName", data: "partyName" },
+          ],
+          dataSrc: "",
+        });
+      });
+    </script>
+  </body>
+</html>

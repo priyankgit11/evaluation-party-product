@@ -4648,19 +4648,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\priya\\.nuget\\packages\\": {}
+    "C:\\Users\\DELL\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\EvaluationPartyProduct.csproj",
+      "projectUniqueName": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\EvaluationPartyProduct.csproj",
       "projectName": "EvaluationPartyProduct",
-      "projectPath": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\EvaluationPartyProduct.csproj",
-      "packagesPath": "C:\\Users\\priya\\.nuget\\packages\\",
-      "outputPath": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\obj\\",
+      "projectPath": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\EvaluationPartyProduct.csproj",
+      "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+      "outputPath": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\priya\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
