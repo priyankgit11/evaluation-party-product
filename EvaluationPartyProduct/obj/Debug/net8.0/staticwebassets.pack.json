@@ -1,60 +1,12 @@
 {
   "Files": [
     {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\AssignParty\\create.css",
-      "PackagePath": "staticwebassets\\AssignParty\\create.css"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\AssignParty\\create.html",
-      "PackagePath": "staticwebassets\\AssignParty\\create.html"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\AssignParty\\create.js",
-      "PackagePath": "staticwebassets\\AssignParty\\create.js"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\AssignParty\\index.css",
-      "PackagePath": "staticwebassets\\AssignParty\\index.css"
-    },
-    {
       "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\AssignParty\\index.html",
       "PackagePath": "staticwebassets\\AssignParty\\index.html"
     },
     {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\AssignParty\\index.js",
-      "PackagePath": "staticwebassets\\AssignParty\\index.js"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Invoice\\create.html",
-      "PackagePath": "staticwebassets\\Invoice\\create.html"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Invoice\\index.css",
-      "PackagePath": "staticwebassets\\Invoice\\index.css"
-    },
-    {
       "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Invoice\\index.html",
       "PackagePath": "staticwebassets\\Invoice\\index.html"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Invoice\\index.js",
-      "PackagePath": "staticwebassets\\Invoice\\index.js"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Invoice\\view.html",
-      "PackagePath": "staticwebassets\\Invoice\\view.html"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\create.css",
-      "PackagePath": "staticwebassets\\Party\\create.css"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\create.html",
-      "PackagePath": "staticwebassets\\Party\\create.html"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\create.js",
-      "PackagePath": "staticwebassets\\Party\\create.js"
     },
     {
       "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\index.css",
@@ -69,52 +21,12 @@
       "PackagePath": "staticwebassets\\Party\\index.js"
     },
     {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\ProductRate\\create.css",
-      "PackagePath": "staticwebassets\\ProductRate\\create.css"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\ProductRate\\create.html",
-      "PackagePath": "staticwebassets\\ProductRate\\create.html"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\ProductRate\\create.js",
-      "PackagePath": "staticwebassets\\ProductRate\\create.js"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\ProductRate\\index.css",
-      "PackagePath": "staticwebassets\\ProductRate\\index.css"
-    },
-    {
       "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\ProductRate\\index.html",
       "PackagePath": "staticwebassets\\ProductRate\\index.html"
     },
     {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\ProductRate\\index.js",
-      "PackagePath": "staticwebassets\\ProductRate\\index.js"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\create.css",
-      "PackagePath": "staticwebassets\\Product\\create.css"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\create.html",
-      "PackagePath": "staticwebassets\\Product\\create.html"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\create.js",
-      "PackagePath": "staticwebassets\\Product\\create.js"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\index.css",
-      "PackagePath": "staticwebassets\\Product\\index.css"
-    },
-    {
       "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\index.html",
       "PackagePath": "staticwebassets\\Product\\index.html"
-    },
-    {
-      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\index.js",
-      "PackagePath": "staticwebassets\\Product\\index.js"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.EvaluationPartyProduct.Microsoft.AspNetCore.StaticWebAssets.props",

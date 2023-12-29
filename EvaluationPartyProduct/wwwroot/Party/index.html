@@ -1,44 +1,137 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>Party List</title>
-    <link rel="stylesheet" href="index.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css"
+    />
+
+    <link
+      href="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.css"
+      rel="stylesheet"
+    />
+
+    <style></style>
   </head>
   <body>
-    <div class="header">
-      <div class="container">
-        <div class="header-heading">
-          <a href="/Party/index.html"> Product Management site </a>
-        </div>
-        <div class="header-title"><a href="/Party/index.html">Party</a></div>
-        <div class="header-title">
-          <a href="/Product/index.html">Product</a>
-        </div>
-        <div class="header-title">
-          <a href="/AssignParty/index.html">Assign Party</a>
-        </div>
-        <div class="header-title">
-          <a href="/ProductRate/index.html">Product Rate</a>
-        </div>
-        <div class="header-title">
-          <a href="/Invoice/index.html">Invoice</a>
-        </div>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark px-5">
+      <a class="navbar-brand" href="#">Product Management System</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarCollapse"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="/Party/index.html"
+              >Party</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Product/index.html">Product</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/AssignParty/index.html">Assign Party</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ProductRate/index.html">Product Rate</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Invoice/index.html">Invoice</a>
+          </li>
+        </ul>
       </div>
-    </div>
-    <div class="content">
-      <div class="container">
-        <button class="btn create-btn">Add New Party</button>
-        <table>
-          <tr>
-            <th>ID</th>
-            <th>Party Name</th>
-            <th>Actions</th>
-          </tr>
-          <tbody class="party-tbl"></tbody>
+    </nav>
+    <!-- Content -->
+    <div class="container mt-5">
+      <div class="main-body d-flex justify-content-between">
+        <h1 class="body-title">Party List</h1>
+        <button type="button" class="btn btn-xs text-light btn-warning btnAdd">
+          Add Party
+        </button>
+      </div>
+      <!-- Create Party Form -->
+
+      <hr />
+
+      <!-- Party List -->
+      <div>
+        <table width="100%" id="dtExample" class="display" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Party Name</th>
+            </tr>
+          </thead>
         </table>
       </div>
     </div>
+
+    <!-- Bootstrap JS -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="index.js"></script>
+    <script>
+      //SELECTING ELEMENTS
+      var table = $("#dtExample").DataTable;
+
+      //FUNCTIONS
+      $(document).ready(function () {
+        console.log(`${origin}/api/Party`);
+        $.getJSON(`${origin}/api/Party`, function (data, textStatus, jqXHR) {
+          console.log(jqXHR);
+          console.log(data);
+          fnLoadDataTableInstance(data);
+        });
+      });
+
+      function getJson() {
+        console.log();
+        $.ajax({
+          type: "GET",
+          dataType: "json",
+          url: `/api/Party`,
+          succces: function (data) {
+            console.log("bye");
+            console.log(data.responseJSON);
+            fnLoadDataTableInstance(data.responseJSON);
+          },
+          error: function (err) {
+            console.log(err);
+          },
+        });
+      }
+
+      function fnLoadDataTableInstance(dataSource) {
+        $("#dtExample").DataTable({
+          dom: "Bfrtip",
+          data: dataSource,
+          buttons: ["copy", "excel", "pdf"],
+          columns: [{ data: "id" }, { data: "partyName" }],
+
+          paging: true,
+          info: true,
+          language: {
+            emptyTable: "No data available",
+          },
+        });
+      }
+    </script>
   </body>
-  <script src="index.js"></script>
 </html>
