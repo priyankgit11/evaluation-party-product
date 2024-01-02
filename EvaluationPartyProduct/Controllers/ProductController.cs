@@ -25,7 +25,13 @@ namespace EvaluationPartyProduct.Controllers
         {
             var products = await context.TblProducts.ToListAsync();
             var productsDTO = mapper.Map<List<ProductDTO>>(products);
-            return productsDTO ;
+            return productsDTO;
+        }
+        public async Task<bool> checkProductExists(string name)
+        {
+            var party = await context.TblProducts.FirstOrDefaultAsync(i => i.ProductName == name);
+            if (party == null) return false;
+            return true;
         }
         [HttpGet("{id:int}", Name = "getProduct")]
         public async Task<ActionResult<ProductDTO>> Get(int id)
@@ -40,11 +46,12 @@ namespace EvaluationPartyProduct.Controllers
         public async Task<ActionResult> Post([FromBody] ProductCreationDTO productCreation)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (await checkProductExists(productCreation.ProductName)) return Conflict("Duplicate data is not allowed.");
             var product = mapper.Map<TblProduct>(productCreation);
             context.Add(product);
             await context.SaveChangesAsync();
-            var productDTO = mapper.Map<PartyDTO>(product);
-            return new CreatedAtRouteResult("getParty", new {Id = productDTO.Id},productDTO);
+            var productDTO = mapper.Map<ProductDTO>(product);
+            return new CreatedAtRouteResult("getProduct", new { Id = productDTO.Id }, productDTO);
         }
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
@@ -59,6 +66,7 @@ namespace EvaluationPartyProduct.Controllers
         public async Task<ActionResult> Put(int id, [FromBody] ProductCreationDTO productCreation)
         {
             var product = mapper.Map<TblProduct>(productCreation);
+            if (await checkProductExists(productCreation.ProductName)) return Conflict("Duplicate data is not allowed.");
             product.Id = id;
             context.Entry(product).State = EntityState.Modified;
             await context.SaveChangesAsync();

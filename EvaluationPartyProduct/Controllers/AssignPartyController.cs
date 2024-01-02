@@ -21,6 +21,13 @@ namespace EvaluationPartyProduct.Controllers
             context = Context;
             this.mapper = mapper;
         }
+        public async Task<bool> checkAssignExists(AssignPartyCreationDTO assignPartyCreationDTO)
+        {
+            var assignParty = await context.TblAssignParties.FirstOrDefaultAsync(i=> i.PartyId == assignPartyCreationDTO.PartyId && i.ProductId == assignPartyCreationDTO.ProductId );
+            if(assignParty == null)
+                return false;
+            return true;
+        }
         [HttpGet]
         public async Task<List<AssignPartyRelationDTO>> Get()
         {
@@ -31,7 +38,7 @@ namespace EvaluationPartyProduct.Controllers
         [HttpGet("{id:int}", Name = "getAssignParty")]
         public async Task<ActionResult<AssignPartyRelationDTO>> Get(int id)
         {
-            var assignParty = await context.TblAssignParties.FindAsync(id);
+            var assignParty = await context.TblAssignParties.Include(i=>i.Party).Include(i=>i.Product).FirstOrDefaultAsync(i=>i.Id == id);
             if (assignParty == null) return NoContent();
             var assignPartyDTO = mapper.Map<AssignPartyRelationDTO>(assignParty);
             return Ok(assignPartyDTO);
@@ -56,6 +63,7 @@ namespace EvaluationPartyProduct.Controllers
         public async Task<ActionResult<AssignPartyRelationDTO>> Post([FromBody] AssignPartyCreationDTO assignPartyCreation)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (await checkAssignExists(assignPartyCreation)) return Conflict("Duplicate data not allowed");
             var assignParty = mapper.Map<TblAssignParty>(assignPartyCreation);
             context.TblAssignParties.Add(assignParty);
             await context.SaveChangesAsync();
@@ -74,6 +82,7 @@ namespace EvaluationPartyProduct.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] AssignPartyCreationDTO assignPartyCreation)
         {
+            if (await checkAssignExists(assignPartyCreation)) return Conflict("Duplicate data not allowed");
             var assignParty = mapper.Map<TblAssignParty>(assignPartyCreation);
             assignParty.Id = id;
             context.Entry(assignParty).State = EntityState.Modified;

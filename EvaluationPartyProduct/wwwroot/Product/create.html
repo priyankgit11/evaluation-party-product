@@ -65,24 +65,24 @@
     <div class="container mt-5">
       <div class="container">
         <div class="form-container">
-          <h2 class="form-title">Add Party</h2>
-          <form id="partyForm">
+          <h2 class="form-title">Add Product</h2>
+          <form id="productForm">
             <div class="form-group">
               <div class="form-title">
-                <label for="partyName">Party Name</label>
+                <label for="productName">Product Name</label>
               </div>
               <div class="form-field">
                 <input
                   type="text"
                   class="form-control d-inline-flex"
-                  id="partyName"
-                  placeholder="Enter party name"
+                  id="productName"
+                  placeholder="Enter product name"
                   required
                 />
                 <div id="invalid-feedback" class="text-danger"></div>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary">Add Party</button>
+            <button type="submit" class="btn btn-primary">Add Product</button>
             <a href="index.html"
               ><button type="button" class="btn btn-secondary">
                 Cancel
@@ -103,18 +103,18 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    $("#partyForm").submit(function (e) {
+    $("#productForm").submit(function (e) {
       e.preventDefault();
       const name =
-        String($("#partyName").val()).trim().charAt(0).toUpperCase() +
-        String($("#partyName").val()).slice(1);
+        String($("#productName").val()).trim().charAt(0).toUpperCase() +
+        String($("#productName").val()).slice(1);
       const dataSource = {
-        partyName: name,
+        productName: name,
       };
       console.log(JSON.stringify(dataSource));
       $.ajax({
         method: "POST",
-        url: `${origin}/api/Party`,
+        url: `${origin}/api/Product`,
         data: JSON.stringify(dataSource),
         headers: {
           "Content-type": "application/json",
@@ -122,7 +122,7 @@
         dataType: "json",
         success: function () {
           $("#invalid-feedback").hide();
-          window.location.replace(`${origin}/Party/index.html`);
+          window.location.replace(`${origin}/Product/index.html`);
         },
         error: function (err) {
           console.log("Error" + err.responseText);

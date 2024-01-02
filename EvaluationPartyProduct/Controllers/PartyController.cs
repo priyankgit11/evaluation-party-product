@@ -40,11 +40,18 @@ namespace EvaluationPartyProduct.Controllers
         public async Task<ActionResult> Post([FromBody] PartyCreationDTO partyCreation)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (await checkPartyExists(partyCreation.PartyName)) return Conflict("Duplicate data is not allowed.");
             var party = mapper.Map<TblParty>(partyCreation);
             context.Add(party);
             await context.SaveChangesAsync();
             var partyDTO = mapper.Map<PartyDTO>(party);
-            return new CreatedAtRouteResult("getParty", new {Id = partyDTO.Id},partyDTO);
+            return new CreatedAtRouteResult("getParty", new { Id = partyDTO.Id }, partyDTO);
+        }
+        public async Task<bool> checkPartyExists(string name)
+        {
+            var party = await context.TblParties.FirstOrDefaultAsync(i => i.PartyName == name);
+            if (party == null) return false;
+            return true;
         }
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
@@ -59,6 +66,7 @@ namespace EvaluationPartyProduct.Controllers
         public async Task<ActionResult> Put(int id, [FromBody] PartyCreationDTO partyCreation)
         {
             var party = mapper.Map<TblParty>(partyCreation);
+            if (await checkPartyExists(partyCreation.PartyName)) return Conflict("Duplicate data is not allowed.");
             party.Id = id;
             context.Entry(party).State = EntityState.Modified;
             await context.SaveChangesAsync();

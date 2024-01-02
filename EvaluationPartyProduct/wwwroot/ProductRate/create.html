@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Product Management System-Party</title>
+    <title>Product Management System-Product Rate</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -21,13 +21,29 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css"
     />
-    <link rel="stylesheet" href="index.css" />
 
-    <style></style>
+    <style>
+      .btn-orange {
+        background-color: white;
+        color: #d4941c;
+        border: 2px solid #d4941c;
+      }
+      .btn-orange:hover {
+        background-color: #d4941c;
+        color: white;
+      }
+      #toastMessage {
+        display: absolute;
+        right: 1em;
+        bottom: 1em;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark px-5">
-      <a class="navbar-brand" href="#">Product Management System</a>
+      <a class="navbar-brand" href="/Party/index.html"
+        >Product Management System</a
+      >
       <button
         class="navbar-toggler"
         type="button"
@@ -65,24 +81,31 @@
     <div class="container mt-5">
       <div class="container">
         <div class="form-container">
-          <h2 class="form-title">Add Party</h2>
-          <form id="partyForm">
+          <h2 class="form-title">Add New Rate</h2>
+          <form id="productRateForm">
             <div class="form-group">
               <div class="form-title">
-                <label for="partyName">Party Name</label>
+                <label for="productDropdown">Product Name</label>
               </div>
               <div class="form-field">
-                <input
-                  type="text"
-                  class="form-control d-inline-flex"
-                  id="partyName"
-                  placeholder="Enter party name"
-                  required
-                />
-                <div id="invalid-feedback" class="text-danger"></div>
+                <select
+                  class="form-control"
+                  id="productDropdown"
+                  name="productDropdown"
+                ></select>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary">Add Party</button>
+            <div class="form-group">
+              <label for="productRate">Rate</label>
+              <input
+                type="text"
+                class="form-control"
+                id="productRate"
+                name="productRate"
+              />
+            </div>
+            <div id="invalid-feedback" class="text-danger"></div>
+            <button type="submit" class="btn btn-primary">Add</button>
             <a href="index.html"
               ><button type="button" class="btn btn-secondary">
                 Cancel
@@ -103,18 +126,36 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    $("#partyForm").submit(function (e) {
+    $(document).ready(function () {
+      $.ajax({
+        url: `${origin}/api/Product`,
+        type: "GET",
+        dataType: "json",
+        dataSrc: "",
+        success: function (data) {
+          let productHtml = "";
+          Array.from(data, (item) => {
+            console.log(item);
+            productHtml += `<option value=${item.id}>${item.productName}</option>`;
+          });
+          $("#productDropdown").append(productHtml);
+        },
+      });
+    });
+
+    // ON SUBMITTING
+    $("#productRateForm").submit(function (e) {
       e.preventDefault();
-      const name =
-        String($("#partyName").val()).trim().charAt(0).toUpperCase() +
-        String($("#partyName").val()).slice(1);
+      const product = $("#productDropdown").val();
+      const productRate = $("#productRate").val();
       const dataSource = {
-        partyName: name,
+        productId: product,
+        rate: productRate,
       };
       console.log(JSON.stringify(dataSource));
       $.ajax({
         method: "POST",
-        url: `${origin}/api/Party`,
+        url: `${origin}/api/ProductRate`,
         data: JSON.stringify(dataSource),
         headers: {
           "Content-type": "application/json",
@@ -122,7 +163,7 @@
         dataType: "json",
         success: function () {
           $("#invalid-feedback").hide();
-          window.location.replace(`${origin}/Party/index.html`);
+          window.location.replace(`${origin}/ProductRate/index.html`);
         },
         error: function (err) {
           console.log("Error" + err.responseText);

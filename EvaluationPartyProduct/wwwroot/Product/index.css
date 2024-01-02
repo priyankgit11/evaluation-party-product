@@ -7,4 +7,8 @@
   background-color: #d4941c;
   color: white;
 }
-
+#toastMessage {
+  display: absolute;
+  right: 1em;
+  bottom: 1em;
+}

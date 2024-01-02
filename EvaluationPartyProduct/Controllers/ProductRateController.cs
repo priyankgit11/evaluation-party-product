@@ -21,6 +21,12 @@ namespace EvaluationPartyProduct.Controllers
             this.context = context;
             this.mapper = mapper;
         }
+        public async Task<bool> checkRateExists(ProductRateCreationDTO rateDTO)
+        {
+            var productRate = await context.TblProductRates.FirstOrDefaultAsync(i=>i.ProductId == rateDTO.ProductId && i.Rate == rateDTO.Rate);
+            if(productRate == null) { return false; }
+            return true;
+        }
         [HttpGet]
         public async Task<List<ProductRateRelationDTO>> Get()
         {
@@ -48,6 +54,7 @@ namespace EvaluationPartyProduct.Controllers
         public async Task<ActionResult> Post([FromBody] ProductRateCreationDTO productRateCreation)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            if(await checkRateExists(productRateCreation)) { return Conflict("Duplicate data is not allowed"); }
             var productRate = mapper.Map<TblProductRate>(productRateCreation);
             context.TblProductRates.Add(productRate);
             await context.SaveChangesAsync();
@@ -69,20 +76,6 @@ namespace EvaluationPartyProduct.Controllers
             var productRate = mapper.Map<TblProductRate>(productRateCreation);
             productRate.Id = id;
             context.Entry(productRate).State = EntityState.Modified;
-            await context.SaveChangesAsync();
-            return NoContent();
-        }
-        [HttpPatch("{id}")]
-        public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<ProductRateCreationDTO> patchDocument)
-        {
-            if (patchDocument == null) return BadRequest();
-            var entityFromDB = await context.TblProductRates.FirstOrDefaultAsync(x => x.Id == id);
-            if (entityFromDB == null) return NotFound();
-            var entityDTO = mapper.Map<ProductRateCreationDTO>(entityFromDB);
-            patchDocument.ApplyTo(entityDTO, ModelState);
-            var isValid = TryValidateModel(entityDTO);
-            if (!isValid) return BadRequest(ModelState);
-            mapper.Map(entityDTO, entityFromDB);
             await context.SaveChangesAsync();
             return NoContent();
         }
