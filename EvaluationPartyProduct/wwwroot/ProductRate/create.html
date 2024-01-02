@@ -141,6 +141,14 @@
           $("#productDropdown").append(productHtml);
         },
       });
+      $(".nav-link").each(function () {
+        if (firstFolder($(this).attr("href")) === firstFolder(currentUrl)) {
+          // Add a class to highlight the active link
+          $(this).addClass("active");
+        } else {
+          $(this).removeClass("active");
+        }
+      });
     });
 
     // ON SUBMITTING
@@ -168,10 +176,20 @@
         error: function (err) {
           console.log("Error" + err.responseText);
           $("#invalid-feedback").show();
-          $("#invalid-feedback").empty();
+          $("#invalid-feedback").html("");
           $("#invalid-feedback").append(String(err.responseText));
         },
       });
     });
+
+    function firstFolder(path) {
+      path = path.replace(/^\/|\/$/g, "");
+      // Split the path into an array of segments
+      var pathSegments = path.split("/");
+      // Get the first folder name (if available)
+      var firstFolder = pathSegments.length > 0 ? pathSegments[0] : null;
+      console.log(firstFolder);
+      return firstFolder;
+    }
   </script>
 </html>

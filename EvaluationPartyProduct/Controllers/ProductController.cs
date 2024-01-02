@@ -20,6 +20,12 @@ namespace EvaluationPartyProduct.Controllers
             this.context = context;
             this.mapper = mapper;
         }
+        public async Task<bool> checkProductExists(string name)
+        {
+            var party = await context.TblProducts.FirstOrDefaultAsync(i => i.ProductName == name);
+            if (party == null) return false;
+            return true;
+        }
         [HttpGet]
         public async Task<List<ProductDTO>> Get()
         {
@@ -27,11 +33,18 @@ namespace EvaluationPartyProduct.Controllers
             var productsDTO = mapper.Map<List<ProductDTO>>(products);
             return productsDTO;
         }
-        public async Task<bool> checkProductExists(string name)
+        [HttpGet("assigned/{id:int}")]
+        public async Task<List<ProductDTO>> GetOnlyAssigned(int id)
         {
-            var party = await context.TblProducts.FirstOrDefaultAsync(i => i.ProductName == name);
-            if (party == null) return false;
-            return true;
+            var partyId = id;
+            var commonProducts = from product in context.TblProducts
+                                 join assign in context.TblAssignParties on product.Id equals assign.ProductId
+                                 join rate in context.TblProductRates on product.Id equals rate.ProductId
+                                 where assign.PartyId == partyId
+                                 select product;
+            var products = await commonProducts.ToListAsync();
+            var productsDTO = mapper.Map<List<ProductDTO>>(products);
+            return productsDTO;
         }
         [HttpGet("{id:int}", Name = "getProduct")]
         public async Task<ActionResult<ProductDTO>> Get(int id)

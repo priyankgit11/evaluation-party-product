@@ -3,54 +3,588 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Party List</title>
+    <title>Product Management System-Invoice</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css"
+    />
+
+    <link
+      href="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css"
+    />
+    <style>
+      .btn-orange {
+        background-color: white;
+        color: #d4941c;
+        border: 2px solid #d4941c;
+      }
+      .btn-orange:hover {
+        background-color: #d4941c;
+        color: white;
+      }
+      #toastMessage {
+        display: absolute;
+        right: 1em;
+        bottom: 1em;
+      }
+      /* CSS to manage the modal-body overflow */
+      .modal-body {
+        overflow-y: auto; /* Enable vertical scrollbar if content exceeds modal height */
+        max-height: 400px; /* Set a maximum height for the modal-body */
+        padding: 15px; /* Add padding to prevent content from sticking to modal edges */
+      }
+    </style>
   </head>
   <body>
-    <nav class="navbar bg-primary" data-bs-theme="dark">
-      <div class="container-fluid mx-5">
-        <a class="navbar-brand mb-0 h1" href="/Party/index.html"
-          >Product Management System</a
-        >
-        <div class="navbar-expand" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a
-                class="nav-link active"
-                aria-current="page"
-                href="/Party/index.html"
-                >Party</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/Product/index.html">Product</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/AssignParty/index.html"
-                >Assign Party</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/ProductRate/index.html"
-                >Product Rate</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/Invoice/index.html">Invoice</a>
-            </li>
-          </ul>
-        </div>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark px-5">
+      <a class="navbar-brand" href="#">Product Management System</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarCollapse"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="/Party/index.html"
+              >Party</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Product/index.html">Product</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/AssignParty/index.html">Assign Party</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ProductRate/index.html">Product Rate</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Invoice/index.html">Invoice</a>
+          </li>
+        </ul>
       </div>
     </nav>
+    <!-- Content -->
+    <div class="container mt-5">
+      <div class="main-body d-flex justify-content-between">
+        <h1 class="body-title">Invoice List</h1>
+        <a href="create.html">
+          <button type="button" class="btn btn-xs btn-orange btnAdd">
+            Add New Invoice
+          </button>
+        </a>
+      </div>
+      <hr />
+      <div class="container">
+        <table
+          width="100%"
+          id="dtExample"
+          class="display"
+          cellspacing="0"
+        ></table>
+      </div>
+    </div>
+    <!-- MODAL -->
+    <div
+      class="modal fade"
+      id="editModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="editModalLabel"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-xl modal-dialog-scrollable"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Edit Form</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Your form goes here -->
+            <div class="row justify-content-center">
+              <div class="mx-2">
+                <form id="editForm">
+                  <div class="form-group">
+                    <label for="partyDropdown">Party Name</label>
+                    <select
+                      class="form-control"
+                      id="partyDropdown"
+                      name="partyDropdown"
+                      disabled
+                    ></select>
+                  </div>
+                  <div class="form-group">
+                    <label for="productDropdown">Product Name</label>
+                    <select
+                      class="form-control"
+                      id="productDropdown"
+                      name="productDropdown"
+                    ></select>
+                  </div>
+                  <div class="form-group">
+                    <label for="productRate">Rate</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="productRate"
+                      name="productRate"
+                      disabled
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="quantity"
+                      name="quantity"
+                    />
+                  </div>
+                  <div id="invalid-feedback" class="text-danger"></div>
+                  <div class="div-btn-add">
+                    <button type="submit" class="btn btn-success" id="btn-add">
+                      Add
+                    </button>
+                  </div>
+                  <div class="div-btn-edit">
+                    <button type="submit" class="btn btn-success" id="btn-edit">
+                      Edit
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <div class="mx-4">
+                <!-- DataTable -->
+                <table
+                  class="table"
+                  id="editDataTable"
+                  class="display"
+                  cellspacing="0"
+                ></table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-    crossorigin="anonymous"
-  ></script>
+  <!-- Bootstrap JS -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    //SELECTING ELEMENTS
+    var editInvoiceId = 0;
+    var editInvoiceDetailId = 0;
+    var Itotal = 0;
+    var IGrandTotal = 0;
+    var table = $("#dtExample").DataTable({
+      dom: "Bfrtip",
+      ajax: {
+        url: `${origin}/api/Invoice`,
+        type: "GET",
+        dataType: "json",
+        dataSrc: "",
+      },
+      columns: [
+        { title: "ID", data: "id", searchable: false },
+        { title: "Party Name", data: "partyName" },
+        {
+          title: "Date",
+          data: "date",
+          render: function (data, type, row) {
+            if (type === "display" || type === "filter") {
+              return formatDate(data); // Format the date using the formatDate function
+            }
+            return data;
+          },
+        },
+        { title: "Grand Total", data: "grandTotal" },
+        {
+          title: "Actions",
+          searchable: false,
+          render: function (data, type, row) {
+            const div = `
+          <div class="action-button d-flex flex-row">
+            <div class="btn-edit text-body-secondary mx-2">
+              <button class="btn btn-primary text-light editBtn" data-toggle="modal" data-target="#editModal" id="edit${row.id}">Edit</button>
+            </div>
+            <div class="btn-delete">
+              <button class="btn btn-danger text-light" onclick="deleteInvoiceConfirmation(${row.id})">Delete</button>
+            </div>
+          </div>
+        `;
+            return div;
+          },
+        },
+      ],
+
+      paging: true,
+      info: true,
+      language: {
+        emptyTable: "No data available",
+      },
+    });
+
+    // EDIT DATA TABLE
+    var editTable = $("#editDataTable").DataTable({
+      dom: "Bfrtip",
+      ajax: {
+        type: "GET",
+        url: getDynamicURL(),
+        dataType: "json",
+        dataSrc: "",
+      },
+      columns: [
+        { title: "ID", data: "id", searchable: false },
+        { title: "Party Name", data: "partyName" },
+        { title: "Product Name", data: "productName" },
+        { title: "Rate", data: "rate" },
+        { title: "Quantity", data: "quantity" },
+        { title: "Total", data: "total" },
+        {
+          title: "Actions",
+          searchable: false,
+          render: function (data, type, row) {
+            console.log(row);
+            const div = `
+          <div class="action-button d-flex flex-row">
+            <div class="btn-edit text-body-secondary mx-2">
+              <button class="btn btn-primary text-light editInvoiceBtn" id="edit${row.id}">Edit</button>
+            </div>
+            <div class="btn-delete">
+              <button class="btn btn-danger text-light" >Delete</button>
+            </div>
+          </div>
+        `;
+            return div;
+          },
+        },
+      ],
+
+      paging: true,
+      info: true,
+      language: {
+        emptyTable: "No data available",
+      },
+    });
+    function getDynamicURL() {
+      const url = `${origin}/api/Invoice/details/${editInvoiceId}`;
+      return url;
+    }
+    //FUNCTIONS
+    $(document).ready(function () {
+      var clickedButtonId = null;
+      table.ajax.reload();
+      // INVOICE LIST EDIT BUTTON
+      $(document).on("click", ".editBtn", function (e) {
+        const id = $(this).attr("id");
+        editInvoiceId = extractNumber(id);
+        //DYNAMIC URL
+        editTable.ajax.url(getDynamicURL()).load(function () {
+          setInitialData();
+          console.log("set");
+          $("#editModal").modal("show");
+          $(".div-btn-add").show();
+          $(".div-btn-edit").hide();
+        });
+      });
+      $(document).on("click", ".editInvoiceBtn", function (e) {
+        const id = $(this).attr("id");
+        editInvoiceDetailId = extractNumber(id);
+        setEditData();
+        $(".div-btn-add").hide();
+        $(".div-btn-edit").show();
+      });
+      // ON PRODUCT CHANGE
+      $(document).on("change", "#productDropdown", function (e) {
+        updateRate($("#productDropdown").val());
+      });
+      // GETTING BUTTON ID
+      $(document).on("click", "#btn-add", function (e) {
+        clickedButtonId = e.target.id;
+      });
+      $(document).on("click", "#btn-edit", function (e) {
+        clickedButtonId = e.target.id;
+      });
+      // ON SUBMITTING
+      $(document).on("submit", "#editForm", function (e) {
+        e.preventDefault();
+        const data = collectData();
+        if (clickedButtonId === "btn-add") {
+          $.ajax({
+            type: "POST",
+            url: `${origin}/api/Invoice/InvoiceDetails`,
+            data: JSON.stringify(data),
+            headers: {
+              "Content-type": "application/json",
+            },
+            dataType: "json",
+            success: function () {
+              editTable.ajax.url(getDynamicURL()).load();
+              $(".div-btn-add").show();
+              $(".div-btn-edit").hide();
+            },
+            error: function (err) {
+              console.error(err);
+            },
+          });
+        } else {
+          $.ajax({
+            type: "PUT",
+            url: `${origin}/api/Invoice/InvoiceDetails/${editInvoiceDetailId}`,
+            data: JSON.stringify(data),
+            headers: {
+              "Content-type": "application/json",
+            },
+            dataType: "json",
+            success: function () {
+              editTable.ajax.url(getDynamicURL()).load();
+              $(".div-btn-add").show();
+              $(".div-btn-edit").hide();
+            },
+            error: function (err) {
+              console.error(err);
+            },
+          });
+        }
+      });
+      // FOR ACTIVE NAVBAR LINK
+      var currentUrl = window.location.pathname;
+      // Loop through each navbar link and check if its href matches the current URL
+      $(".nav-link").each(function () {
+        if (firstFolder($(this).attr("href")) === firstFolder(currentUrl)) {
+          // Add a class to highlight the active link
+          $(this).addClass("active");
+        } else {
+          $(this).removeClass("active");
+        }
+      });
+    });
+
+    function collectData() {
+      const data = {
+        invoiceId: editInvoiceId,
+        productId: $("#productDropdown").val(),
+        rate: $("#productRate").val(),
+        quantity: $("#quantity").val(),
+      };
+      return data;
+    }
+
+    function setEditData() {
+      $.ajax({
+        url: `${origin}/api/Invoice/InvoiceDetails/${editInvoiceDetailId}`,
+        type: "GET",
+        dataType: "json",
+        dataSrc: "",
+        success: function (data) {
+          $("#productDropdown").val(data.productId);
+          $("#productRate").val(data.rate);
+          $("#quantity").val(data.quantity);
+        },
+        error: function (err) {
+          console.error(err);
+        },
+      });
+    }
+
+    function setInitialData() {
+      // INSERTING DATA IN PARTY DROPDOWN
+      $.ajax({
+        url: `${origin}/api/Invoice/${editInvoiceId}`,
+        type: "GET",
+        dataType: "json",
+        dataSrc: "",
+        success: function (data) {
+          let partyHtml = "";
+          let editPartyId = 0;
+          Array.from(data, (item) => {
+            console.log("Party Id: " + item.partyId);
+            editPartyId = item.partyId;
+            partyHtml += `<option value=${item.partyId}>${item.partyName}</option>`;
+          });
+          $("#partyDropdown").html("");
+          $("#partyDropdown").append(partyHtml);
+          updateProductDD(editPartyId);
+        },
+        error: function (err) {
+          console.error(err);
+        },
+      });
+      //INSERTING DATA IN PRODUCT DROPDOWN
+    }
+
+    function updateProductDD(editPartyId) {
+      $.ajax({
+        url: `${origin}/api/Product/assigned/${editPartyId}`,
+        type: "GET",
+        dataType: "json",
+        dataSrc: "",
+        success: function (data) {
+          let productHtml = "";
+          Array.from(data, (item) => {
+            productHtml += `<option value=${item.id}>${item.productName}</option>`;
+          });
+          $("#productDropdown").html("");
+          $("#productDropdown").append(productHtml);
+          updateRate($("#productDropdown").val());
+        },
+        error: function (err) {
+          console.error(err);
+        },
+      });
+    }
+    function updateRate(editProductId) {
+      $.ajax({
+        url: `${origin}/api/ProductRate/getProductRate/${editProductId}`,
+        type: "GET",
+        dataType: "json",
+        dataSrc: "",
+        success: function (data) {
+          $("#productRate").val(data.rate);
+        },
+        error: function (err) {
+          console.error(err);
+        },
+      });
+    }
+
+    // Function to format the date according to your preference
+    function formatDate(dateString) {
+      // Assuming dateString is in a standard date format (e.g., 'YYYY-MM-DD')
+      var date = new Date(dateString);
+
+      var date = new Date(dateString);
+      var day = date.getDate().toString().padStart(2, "0");
+      var month = (date.getMonth() + 1).toString().padStart(2, "0");
+      var year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+
+    function firstFolder(path) {
+      path = path.replace(/^\/|\/$/g, "");
+      // Split the path into an array of segments
+      var pathSegments = path.split("/");
+      // Get the first folder name (if available)
+      var firstFolder = pathSegments.length > 0 ? pathSegments[0] : null;
+      console.log(firstFolder);
+      return firstFolder;
+    }
+
+    function extractNumber(txt) {
+      var numb = txt.match(/\d/g);
+      numb = numb.join("");
+      return numb;
+    }
+
+    const deleteInvoiceConfirmation = function (id) {
+      $.ajax({
+        type: "GET",
+        url: `${origin}/api/Invoice/${id}`,
+        success: function (data) {
+          Swal.fire({
+            title: "Are you sure?",
+            text: `You are deleting this Invoice Record of Party, ${data.partyName}`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log(data.id);
+              $.ajax({
+                type: "DELETE",
+                url: `${origin}/api/Invoice/${data.id}`,
+                success: function (data) {
+                  Swal.fire(
+                    "Deleted!",
+                    "Your item has been deleted.",
+                    "success"
+                  );
+                  table.ajax.reload();
+                },
+              });
+            }
+          });
+        },
+        error: function (err) {
+          console.log(err);
+        },
+      });
+    };
+    const deleteInvoiceDetailConfirmation = function (id) {
+      $.ajax({
+        type: "GET",
+        url: `${origin}/api/Invoice/InvoiceDetails/${id}`,
+        success: function (data) {
+          Swal.fire({
+            title: "Are you sure?",
+            text: `You are deleting this Invoice Record of Party, ${data.partyName} with Product, ${data.productName}`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log(data.id);
+              $.ajax({
+                type: "DELETE",
+                url: `${origin}/api/Invoice/InvoiceDetails/${data.id}`,
+                success: function (data) {
+                  Swal.fire(
+                    "Deleted!",
+                    "Your item has been deleted.",
+                    "success"
+                  );
+                  editTable.ajax.url(getDynamicURL).load();
+                },
+              });
+            }
+          });
+        },
+        error: function (err) {
+          console.log(err);
+        },
+      });
+    };
+
+    $("#editModal").on("hidden.bs.modal", function (e) {
+      // Execute code here when the modal is closed
+      table.ajax.reload();
+      // Your code goes here...
+    });
+  </script>
 </html>

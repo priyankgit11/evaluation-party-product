@@ -55,15 +55,13 @@ namespace EvaluationPartyProduct.Controllers
             {
                 query = sort ? context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderBy(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize)
                     :
-                    context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderByDescending(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize)
-;
+                    context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderByDescending(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize);
             }
             else
             {
                 query = sort ? context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderBy(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize)
                     :
-                    context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderByDescending(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize)
-;
+                    context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderByDescending(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize) ;
             }
 
             var invoices = await query.ToListAsync();
@@ -95,14 +93,23 @@ namespace EvaluationPartyProduct.Controllers
 ;
             }
 
-            var invoices = await query.ToListAsync();
-            var invoicesDTO = mapper.Map<List<InvoiceDTO>>(invoices);
-            await CalculateGrandTotals(invoicesDTO);
-            return Ok(invoicesDTO);
+            var invoiceDetails = await query.ToListAsync();
+            var invoicesDetailDTO = mapper.Map<List<InvoiceDetailDTO>>(invoiceDetails);
+            CalculateTotals(invoicesDetailDTO);
+            return Ok(invoiceDetails);
         }
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<List<InvoiceDetailDTO>>> Get(int id)
+        {
+            var invoices = await context.TblInvoices.Include(i => i.Party).Where(i => i.Id == id).ToListAsync();
+            if (invoices == null) return NoContent();
+            var invoiceDTO = mapper.Map<List<InvoiceDTO>>(invoices);
+            await CalculateGrandTotals(invoiceDTO);
+            return Ok(invoiceDTO);
+        }
+        [HttpGet("details/{id:int}")]
+        public async Task<ActionResult<List<InvoiceDetailDTO>>> GetDetails(int id)
         {
             var invoiceDetails = await context.TblInvoiceDetails.Include(i => i.Invoice).ThenInclude(i => i.Party).Include(i => i.Product).Where(i => i.InvoiceId == id).ToListAsync();
             if (invoiceDetails == null) return NoContent();
@@ -135,14 +142,16 @@ namespace EvaluationPartyProduct.Controllers
             invoiceDTO.GrandTotal = gt;
             return Ok(invoiceDTO);
         }
-        [HttpPost("/InvoiceDetails")]
-        public async Task<ActionResult> Post([FromBody] InvoiceDetailCreationDTO invoiceDetailCreation)
+        [HttpPost("InvoiceDetails")]
+        public async Task<ActionResult<InvoiceDetailDTO>> Post([FromBody] InvoiceDetailCreationDTO invoiceDetailCreation)
         {
             if (!ModelState.IsValid) return BadRequest();
             var invoiceDetail = mapper.Map<TblInvoiceDetail>(invoiceDetailCreation);
             context.Add(invoiceDetail);
             await context.SaveChangesAsync();
-            return Ok();
+            var invoiceDetailDTO = mapper.Map<InvoiceDetailDTO>(invoiceDetail);
+            invoiceDetailDTO.Total = invoiceDetailDTO.Quantity * invoiceDetailDTO.Rate; 
+            return Ok(invoiceDetailDTO);
         }
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
@@ -162,7 +171,7 @@ namespace EvaluationPartyProduct.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult> Put(int id, [FromBody] InvoiceCreationDTO invoiceCreation)
         {
             var invoice = mapper.Map<TblInvoice>(invoiceCreation);
@@ -171,7 +180,7 @@ namespace EvaluationPartyProduct.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
-        [HttpPut("InvoiceDetails/{id}")]
+        [HttpPut("InvoiceDetails/{id:int}")]
         public async Task<ActionResult> PutDetail(int id, [FromBody] InvoiceDetailCreationDTO invoiceDetailCreation)
         {
             var invoiceDetail = mapper.Map<TblInvoiceDetail>(invoiceDetailCreation);

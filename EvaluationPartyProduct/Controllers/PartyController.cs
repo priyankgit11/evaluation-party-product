@@ -36,6 +36,20 @@ namespace EvaluationPartyProduct.Controllers
             var partyDTO = mapper.Map<PartyDTO>(party);
             return Ok(partyDTO);
         }
+        [HttpGet("assigned")]
+        public async Task<List<PartyDTO>> GetOnlyAssigned()
+        {
+            var commonParties = await (from party in context.TblParties
+                                 join assign in context.TblAssignParties on party.Id equals assign.PartyId
+                                 group party by new { party.PartyName, party.Id } into partyGroup
+                                 select new PartyDTO
+                                 {
+                                     PartyName = partyGroup.Key.PartyName,
+                                     Id = partyGroup.Key.Id
+                                 }).ToListAsync();
+            var partiesDTO = mapper.Map<List<PartyDTO>>(commonParties);
+            return partiesDTO;
+        }
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] PartyCreationDTO partyCreation)
         {

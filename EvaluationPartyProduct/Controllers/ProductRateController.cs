@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using EvaluationPartyProduct.DTO;
 using EvaluationPartyProduct.Models;
 using EvaluationPartyProduct.Helpers;
+using System.Runtime.InteropServices;
 
 namespace EvaluationPartyProduct.Controllers
 {
@@ -73,6 +74,7 @@ namespace EvaluationPartyProduct.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] ProductRateCreationDTO productRateCreation)
         {
+            if (await checkRateExists(productRateCreation)) return Conflict("Duplicate data is not allowed");
             var productRate = mapper.Map<TblProductRate>(productRateCreation);
             productRate.Id = id;
             context.Entry(productRate).State = EntityState.Modified;

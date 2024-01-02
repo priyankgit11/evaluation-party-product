@@ -22,7 +22,7 @@ namespace EvaluationPartyProduct.Helpers
             CreateMap<AssignPartyCreationDTO, TblAssignParty>();
             CreateMap<TblAssignParty, AssignPartyRelationDTO>().ForMember(dest => dest.PartyName, opt => opt.MapFrom(src => src.Party.PartyName)).ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName)).ReverseMap();
             //invoice
-            CreateMap<TblInvoice, InvoiceDTO>().ForMember(dest=>dest.PartyName, opt => opt.MapFrom(src => src.Party.PartyName));
+            CreateMap<TblInvoice, InvoiceDTO>().ForMember(dest=>dest.PartyName, opt => opt.MapFrom(src => src.Party.PartyName)).ReverseMap();
             CreateMap<TblInvoiceDetail, InvoiceDetailDTO>().ForMember(dest => dest.PartyName, opt => opt.MapFrom(src => src.Invoice.Party.PartyName)).ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName)).ReverseMap();
             CreateMap<TblInvoice, InvoiceCreationDTO>().ReverseMap();
             CreateMap<TblInvoiceDetail, InvoiceDetailCreationDTO>().ReverseMap();
