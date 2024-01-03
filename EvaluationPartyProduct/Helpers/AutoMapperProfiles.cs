@@ -26,6 +26,8 @@ namespace EvaluationPartyProduct.Helpers
             CreateMap<TblInvoiceDetail, InvoiceDetailDTO>().ForMember(dest => dest.PartyName, opt => opt.MapFrom(src => src.Invoice.Party.PartyName)).ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName)).ReverseMap();
             CreateMap<TblInvoice, InvoiceCreationDTO>().ReverseMap();
             CreateMap<TblInvoiceDetail, InvoiceDetailCreationDTO>().ReverseMap();
+            //USERS
+            CreateMap<TblUser, UserDTO>().ReverseMap();
         }
     }
 }

@@ -429,3 +429,4 @@ D:\Computer\Company\EvaluationPartyProduct\EvaluationPartyProduct\obj\Debug\net8
 D:\Computer\Company\EvaluationPartyProduct\EvaluationPartyProduct\obj\Debug\net8.0\EvaluationPartyProduct.pdb
 D:\Computer\Company\EvaluationPartyProduct\EvaluationPartyProduct\obj\Debug\net8.0\EvaluationPartyProduct.genruntimeconfig.cache
 D:\Computer\Company\EvaluationPartyProduct\EvaluationPartyProduct\obj\Debug\net8.0\ref\EvaluationPartyProduct.dll
+D:\Tutorials\c#\evaluation-party-product\EvaluationPartyProduct\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

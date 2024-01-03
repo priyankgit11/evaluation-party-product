@@ -1,4 +1,7 @@
 using EvaluationPartyProduct.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace EvaluationPartyProduct
 {
@@ -21,7 +24,6 @@ namespace EvaluationPartyProduct
             builder.Services.AddAutoMapper(typeof(Program));
             //DBContext
             builder.Services.AddDbContext<EvaluationDbContext>();
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -37,7 +39,6 @@ namespace EvaluationPartyProduct
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

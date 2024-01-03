@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign-Up</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark px-5">
+      <a class="navbar-brand" href="/Party/index.html"
+        >Product Management System</a
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarCollapse"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="/Party/index.html"
+              >Party</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Product/index.html">Product</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/AssignParty/index.html">Assign Party</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ProductRate/index.html">Product Rate</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Invoice/index.html">Invoice</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Invoice/index.html">
+              <button type="button" class="btn btn-outline-success">
+                Login
+              </button>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>Signup</h2>
+          <form id="signupForm">
+            <div class="mb-3">
+              <label for="signupEmail" class="form-label">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="signupEmail"
+                aria-describedby="emailHelp"
+                placeholder="Enter email"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="signupPassword" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="signupPassword"
+                placeholder="Password"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Signup</button>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <h2>Login</h2>
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="loginEmail" class="form-label">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="loginEmail"
+                aria-describedby="emailHelp"
+                placeholder="Enter email"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="loginPassword" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="loginPassword"
+                placeholder="Password"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $(document).on("submit", "#signupForm", function (e) {
+        e.preventDefault();
+        const JsonData = collectData("signup");
+        $.ajax({
+          type: "POST",
+          url: `${origin}/api/Auth/register`,
+          data: JSON.stringify(JsonData),
+          headers: {
+            "Content-type": "application/json",
+          },
+          dataType: "json",
+          success: function (data) {
+            console.log(data);
+          },
+        });
+      });
+      $(document).on("submit", "#loginForm", function (e) {
+        e.preventDefault();
+        const JsonData = collectData("login");
+        console.log(JsonData);
+        let response;
+        $.ajax({
+          type: "POST",
+          url: `${origin}/api/Auth/login`,
+          data: JSON.stringify(JsonData),
+          headers: {
+            "Content-type": "application/json",
+          },
+          dataType: "json",
+          success: function (text) {
+            response = text;
+          },
+          error: function (err) {
+            console.error(err);
+          },
+        });
+      });
+    });
+    function collectData(formName) {
+      let data;
+      if (formName === "signup") {
+        console.log("First IF");
+        data = {
+          username: String($("#signupEmail").val()).trim(),
+          password: String($("#signupPassword").val()).trim(),
+        };
+      } else {
+        data = {
+          username: String($("#loginEmail").val()).trim(),
+          password: String($("#loginPassword").val()).trim(),
+        };
+      }
+      return data;
+    }
+  </script>
+</html>

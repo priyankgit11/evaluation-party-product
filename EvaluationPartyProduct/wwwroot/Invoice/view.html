@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Management System-Invoice</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css"
+    />
+
+    <link
+      href="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <table id="myDataTable">
+        <!-- DataTable content -->
+      </table>
+      <div class="grandTotal"></div>
+    </div>
+    <tr>
+      <th></th>
+    </tr>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+
+  <script>
+    var table = null;
+    var grandTotal = 0;
+    // Get the URLSearchParams object from the current URL
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Get specific parameter values by key
+    const paramValue1 = urlParams.get("id"); // Replace 'param1' with your parameter name
+    const paramValue2 = urlParams.get("print"); // Replace 'param2' with another parameter name
+
+    // Store the parameter values in variables or objects as needed
+    const parameters = {
+      id: paramValue1,
+      print: paramValue2,
+    };
+    $(document).ready(function () {
+      initializeDatatable();
+      table.ajax.url(getDynamicURL()).load();
+      console.log(table.data());
+    });
+    // GENERATE PDF
+    function generateInvoice() {
+      const doc = new jsPDF();
+
+      // Retrieve DataTable data
+      const pdfData = table.data().toArray();
+      const columnTitles = table
+        .columns()
+        .header()
+        .toArray()
+        .map(function (header) {
+          return $(header).text();
+        });
+      console.log(pdfData, columnTitles);
+
+      // Calculate Grand Total
+      $.ajax({
+        url: `${origin}/api/Invoice/${parameters.id}`,
+        type: "GET",
+        dataType: "json",
+        dataSrc: "",
+        success: function (data) {
+          grandTotal = data[0].grandTotal;
+          // Format Grand Total as desired
+          const formattedTotal = grandTotal.toFixed(2); // Format grand total to two decimal places
+          console.log(grandTotal);
+
+          console.log("data", data);
+          console.log(pdfData);
+          // Generate invoice content
+          let content = "<h2>Invoice</h2>";
+          content += "<table>";
+          content += "<tr>";
+          columnTitles.forEach((title) => {
+            content += `<th>${title}</td>`;
+          });
+          content += "</tr>";
+          pdfData.forEach((row) => {
+            content += `<tr><td>${row["partyName"]}</td><td>${row["productName"]}</td><td>${row["rate"]}</td><td>${row["quantity"]}</td><td>${row["total"]}</td></tr>`; // Adjust these columns based on your data structure
+          });
+          content += `</table><p><strong>Grand Total: $${formattedTotal}</strong></p>`;
+
+          // Add content to PDF
+          doc.fromHTML(content, 10, 10);
+
+          // Save or open the generated PDF
+          doc.save("invoice.pdf");
+        },
+      });
+    }
+    // GET DYNAMIC URL
+    function getDynamicURL() {
+      const url = `${origin}/api/Invoice/details/${parameters.id}`;
+      return url;
+    }
+
+    function initializeDatatable() {
+      table = $("#myDataTable").DataTable({
+        dom: "Bfrtip",
+        ajax: {
+          type: "GET",
+          url: getDynamicURL(),
+          dataType: "json",
+          dataSrc: "",
+          success: function (data) {
+            table.clear().rows.add(data).draw();
+            if (parameters.print === "true") {
+              console.log("In IF");
+              generateInvoice();
+            }
+          },
+        },
+        columns: [
+          { title: "Party", data: "partyName" },
+          { title: "Product", data: "productName" },
+          { title: "Rate", data: "rate" },
+          { title: "Quantity", data: "quantity" },
+          { title: "Total", data: "total" },
+        ],
+        paging: true,
+        info: true,
+        language: {
+          emptyTable: "No data available",
+        },
+      });
+    }
+  </script>
+</html>

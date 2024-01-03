@@ -284,6 +284,10 @@
           url: getDynamicURL(),
           dataType: "json",
           dataSrc: "",
+          success: function (data) {
+            updateUI(data);
+            table.clear().rows.add(data).draw();
+          },
         },
         columns: [
           { title: "ID", data: "id", searchable: false },
@@ -303,7 +307,7 @@
                       <button class="btn btn-primary text-light editInvoiceBtn" id="edit${row.id}">Edit</button>
                     </div>
                     <div class="btn-delete">
-                      <button class="btn btn-danger text-light" id="delete${row.id}">Delete</button>
+                      <button class="btn btn-danger text-light"  id="delete${row.id}" onclick="deleteInvoiceDetailConfirmation(${row.id})">Delete</button>
                     </div>
                   </div>
                 `;
@@ -321,7 +325,9 @@
     }
     // UPDATE UI AND BACKEND IF ANY OR NO INVOICES EXISTS
     function updateUI(data) {
-      if (data.length === 0 && globalInvoiceId > 0) {
+      console.log("data", data);
+      if (Object.keys(data).length === 0 && globalInvoiceId > 0) {
+        console.log("First IF");
         $.ajax({
           type: "DELETE",
           url: `${origin}/api/Invoice/${globalInvoiceId}`,
@@ -331,11 +337,12 @@
           },
         });
         globalInvoiceId = 0;
-        table.hide();
+        $("#addDataTable").hide();
       }
-      if (data.length > 0 && globalInvoiceId > 0) {
-        $("#partyDropdown").attr("disabled", "disabled");
-        $("#date").attr("disabled", "disabled");
+      if (Object.keys(data).length > 0 && globalInvoiceId > 0) {
+        console.log("second  IF");
+        $("#partyDropdown").prop("disabled", true);
+        $("#date").prop("disabled", true);
       }
     }
     function setInitialData() {
@@ -416,5 +423,42 @@
       const url = `${origin}/api/Invoice/details/${globalInvoiceId}`;
       return url;
     }
+    const deleteInvoiceDetailConfirmation = function (id) {
+      $.ajax({
+        type: "GET",
+        url: `${origin}/api/Invoice/InvoiceDetails/${id}`,
+        success: function (data) {
+          Swal.fire({
+            title: "Are you sure?",
+            text: `You are deleting this Invoice Record of Party, ${data.partyName} with Product, ${data.productName}`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log(data.id);
+              $.ajax({
+                type: "DELETE",
+                url: `${origin}/api/Invoice/InvoiceDetails/${data.id}`,
+                success: function (data) {
+                  Swal.fire(
+                    "Deleted!",
+                    "Your item has been deleted.",
+                    "success"
+                  );
+                  table.ajax.url(getDynamicURL()).load();
+                },
+              });
+            }
+          });
+        },
+        error: function (err) {
+          console.log(err);
+        },
+      });
+    };
   </script>
 </html>

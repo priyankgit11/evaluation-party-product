@@ -27,6 +27,8 @@ public partial class EvaluationDbContext : DbContext
 
     public virtual DbSet<TblProductRate> TblProductRates { get; set; }
 
+    public virtual DbSet<TblUser> TblUsers { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("name=DefaultConnection");
 
@@ -120,6 +122,20 @@ public partial class EvaluationDbContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.TblProductRates)
                 .HasForeignKey(d => d.ProductId)
                 .HasConstraintName("FK_tblProductRate_tblProduct");
+        });
+
+        modelBuilder.Entity<TblUser>(entity =>
+        {
+            entity.ToTable("tblUsers");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Password)
+                .HasMaxLength(50)
+                .HasColumnName("password");
+            entity.Property(e => e.Username)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("username");
         });
 
         OnModelCreatingPartial(modelBuilder);

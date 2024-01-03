@@ -5,11 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using EvaluationPartyProduct.Models;
 using EvaluationPartyProduct.DTO;
 using EvaluationPartyProduct.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EvaluationPartyProduct.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PartyController : ControllerBase
     {
         public EvaluationDbContext context { get; set; }
