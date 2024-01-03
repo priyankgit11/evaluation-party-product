@@ -57,18 +57,8 @@ namespace EvaluationPartyProduct.Controllers
         private string CreateToken(TblUser user)
         {
             List<Claim> claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Username) };
-            // Get the key from configuration
-            var tokenKey = configuration.GetSection("AppSettings:Token").Value!;
-
-            // Convert the string key into a byte array (ensure it's at least 512 bits)
-            var keyBytes = Encoding.UTF8.GetBytes(tokenKey.PadRight(64));
-
-            // Create a SymmetricSecurityKey with the byte array key
-            var key = new SymmetricSecurityKey(keyBytes);
-
-            // Create SigningCredentials using the key and HMAC-SHA512 algorithm
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
-
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings:Token").Value!));
+            var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha512);
             // Create a JWT token with claims, expiration, and signing credentials
             var token = new JwtSecurityToken(
                 claims: claims,

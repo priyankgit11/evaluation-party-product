@@ -1,5 +1,6 @@
 using EvaluationPartyProduct.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -24,6 +25,19 @@ namespace EvaluationPartyProduct
             builder.Services.AddAutoMapper(typeof(Program));
             //DBContext
             builder.Services.AddDbContext<EvaluationDbContext>();
+            // JWT TOKEN
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey =  new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
+                    ValidateIssuer = false, // Set to true if you want to validate the issuer
+                    ValidateAudience = false, // Set to true if you want to validate the audience
+                    ValidateLifetime = true,
+                };
+            });
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -38,6 +52,7 @@ namespace EvaluationPartyProduct
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
