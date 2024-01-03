@@ -44,7 +44,7 @@ namespace EvaluationPartyProduct.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<InvoiceDTO>>> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 1, [FromQuery] string filter = "", bool sort = true)
+        public async Task<ActionResult<List<InvoiceDTO>>> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string filter = "", bool sort = true)
         {
             if (page > pageSize || page <= 0 || pageSize <= 0)
             {

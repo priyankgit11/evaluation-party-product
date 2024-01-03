@@ -1,43 +1,43 @@
 {
   "Files": [
     {
-      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\AssignParty\\create.html",
+      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\AssignParty\\create.html",
       "PackagePath": "staticwebassets\\AssignParty\\create.html"
     },
     {
-      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\AssignParty\\index.html",
+      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\AssignParty\\index.html",
       "PackagePath": "staticwebassets\\AssignParty\\index.html"
     },
     {
-      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Invoice\\create.html",
+      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Invoice\\create.html",
       "PackagePath": "staticwebassets\\Invoice\\create.html"
     },
     {
-      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Invoice\\index.html",
+      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Invoice\\index.html",
       "PackagePath": "staticwebassets\\Invoice\\index.html"
     },
     {
-      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\create.html",
+      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\create.html",
       "PackagePath": "staticwebassets\\Party\\create.html"
     },
     {
-      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\index.html",
+      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Party\\index.html",
       "PackagePath": "staticwebassets\\Party\\index.html"
     },
     {
-      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\ProductRate\\create.html",
+      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\ProductRate\\create.html",
       "PackagePath": "staticwebassets\\ProductRate\\create.html"
     },
     {
-      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\ProductRate\\index.html",
+      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\ProductRate\\index.html",
       "PackagePath": "staticwebassets\\ProductRate\\index.html"
     },
     {
-      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Product\\create.html",
+      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\create.html",
       "PackagePath": "staticwebassets\\Product\\create.html"
     },
     {
-      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Product\\index.html",
+      "Id": "D:\\Computer\\Company\\EvaluationPartyProduct\\EvaluationPartyProduct\\wwwroot\\Product\\index.html",
       "PackagePath": "staticwebassets\\Product\\index.html"
     },
     {

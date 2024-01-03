@@ -32,11 +32,6 @@
         background-color: #d4941c;
         color: white;
       }
-      #toastMessage {
-        display: absolute;
-        right: 1em;
-        bottom: 1em;
-      }
     </style>
   </head>
   <body>
@@ -177,6 +172,7 @@
     crossorigin="anonymous"
   ></script>
 
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
@@ -203,7 +199,7 @@
       $(document).on("click", "#btn-edit", function (e) {
         clickedButtonId = e.target.id;
       });
-      $(document).on("submit", "#addDataTable", function (e) {
+      $(document).on("submit", "#createForm", function (e) {
         e.preventDefault();
         if (globalInvoiceId === 0) {
           const data = collectInvoiceData();
@@ -218,33 +214,70 @@
             success: function (data) {
               console.log(data);
               globalInvoiceId = data.id;
+              const invoiceData = collectInvoiceDetailsData();
+              $.ajax({
+                type: "POST",
+                url: `${origin}/api/Invoice/InvoiceDetails`,
+                data: JSON.stringify(invoiceData),
+                headers: {
+                  "Content-type": "application/json",
+                },
+                dataType: "json",
+                success: function (data) {
+                  initializeDatatable();
+                },
+                error: function (err) {
+                  console.error(err);
+                },
+              });
             },
             error: function (err) {
               console.error(err);
             },
           });
+        } else {
+          const invoiceData = collectInvoiceDetailsData();
+          if (clickedButtonId === "btn-add") {
+            $.ajax({
+              type: "POST",
+              url: `${origin}/api/Invoice/InvoiceDetails`,
+              data: JSON.stringify(invoiceData),
+              headers: {
+                "Content-type": "application/json",
+              },
+              dataType: "json",
+              success: function (data) {
+                table.ajax.url(getDynamicURL()).load();
+              },
+              error: function (err) {
+                console.error(err);
+              },
+            });
+          } else {
+            $.ajax({
+              type: "PUT",
+              url: `${origin}/api/Invoice/InvoiceDetails/${editInvoiceDetailId}`,
+              data: JSON.stringify(invoiceData),
+              headers: {
+                "Content-type": "application/json",
+              },
+              dataType: "json",
+              success: function () {
+                table.ajax.url(getDynamicURL()).load();
+                $(".div-btn-add").show();
+                $(".div-btn-edit").hide();
+              },
+              error: function (err) {
+                console.error(err);
+              },
+            });
+          }
         }
-        const data = collectInvoiceDetailsData();
-        $.ajax({
-          type: "POST",
-          url: `${origin}/api/Invoice/InvoiceDetails`,
-          data: JSON.stringify(data),
-          headers: {
-            "Content-type": "application/json",
-          },
-          dataType: "json",
-          success: function (data) {
-            table;
-          },
-          error: function (err) {
-            console.error(err);
-          },
-        });
       });
     });
     // INITIALIZE DATABASE
     function initializeDatatable() {
-      editTable = $("#addDataTable").DataTable({
+      table = $("#addDataTable").DataTable({
         dom: "Bfrtip",
         ajax: {
           type: "GET",
