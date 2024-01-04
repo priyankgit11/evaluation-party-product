@@ -36,7 +36,7 @@ namespace EvaluationPartyProduct.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register(UserDTO userDTO)
+        public async Task<ActionResult<string>> Register(UserDTO userDTO)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (await checkUserExists(userDTO)) return Conflict("Duplicate data is not allowed.");

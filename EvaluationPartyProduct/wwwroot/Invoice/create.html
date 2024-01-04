@@ -32,6 +32,9 @@
         background-color: #d4941c;
         color: white;
       }
+      .nav-link {
+        cursor: pointer !important;
+      }
     </style>
   </head>
   <body>
@@ -69,6 +72,17 @@
           <li class="nav-item">
             <a class="nav-link" href="/Invoice/index.html">Invoice</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Invoice/index.html">
+              <button
+                type="button"
+                class="btn btn-outline-success"
+                id="btn-logout"
+              >
+                Logout
+              </button>
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -104,6 +118,7 @@
                     class="form-control"
                     id="productRate"
                     name="productRate"
+                    min="0"
                     disabled
                   />
                 </div>
@@ -114,6 +129,7 @@
                     class="form-control"
                     id="quantity"
                     name="quantity"
+                    min="0"
                   />
                 </div>
                 <div class="form-group">
@@ -176,6 +192,18 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
+    //Page Authorization checking
+    var token = null;
+    if (isItemExists("token")) {
+      token = localStorage.getItem("token");
+    } else {
+      window.location.replace(`${origin}/Login/index.html`);
+    }
+
+    function isItemExists(key) {
+      return localStorage.getItem(key) !== null;
+    }
+
     var dataExists = false;
     var globalInvoiceId = 0;
     var table = null;
@@ -183,6 +211,11 @@
 
     /////////// FUNCTIONS
     $(document).ready(function () {
+      $(document).on("click", "#btn-logout", function (e) {
+        window.localStorage.removeItem("token");
+        window.location.reload();
+      });
+
       $(".div-btn-edit").hide();
       setInitialData();
       //PARTY DROPDOWN ON CHANGE
@@ -209,6 +242,7 @@
             data: JSON.stringify(data),
             headers: {
               "Content-type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             dataType: "json",
             success: function (data) {
@@ -221,6 +255,7 @@
                 data: JSON.stringify(invoiceData),
                 headers: {
                   "Content-type": "application/json",
+                  Authorization: `Bearer ${token}`,
                 },
                 dataType: "json",
                 success: function (data) {
@@ -244,6 +279,7 @@
               data: JSON.stringify(invoiceData),
               headers: {
                 "Content-type": "application/json",
+                Authorization: `Bearer ${token}`,
               },
               dataType: "json",
               success: function (data) {
@@ -260,6 +296,7 @@
               data: JSON.stringify(invoiceData),
               headers: {
                 "Content-type": "application/json",
+                Authorization: `Bearer ${token}`,
               },
               dataType: "json",
               success: function () {
@@ -282,6 +319,10 @@
         ajax: {
           type: "GET",
           url: getDynamicURL(),
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+
           dataType: "json",
           dataSrc: "",
           success: function (data) {
@@ -331,6 +372,10 @@
         $.ajax({
           type: "DELETE",
           url: `${origin}/api/Invoice/${globalInvoiceId}`,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+
           success: function (data) {
             Swal.fire("Deleted!", "Your item has been deleted.", "success");
             table.ajax.reload();
@@ -349,6 +394,10 @@
       $.ajax({
         url: `${origin}/api/Party/assigned`,
         type: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
         dataType: "json",
         dataSrc: "",
         success: function (data) {
@@ -372,6 +421,10 @@
       $.ajax({
         url: `${origin}/api/Product/assigned/${party}`,
         type: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
         dataType: "json",
         dataSrc: "",
         success: function (data) {
@@ -393,6 +446,10 @@
       $.ajax({
         url: `${origin}/api/ProductRate/getProductRate/${product}`,
         type: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
         dataType: "json",
         dataSrc: "",
         success: function (data) {
@@ -427,6 +484,10 @@
       $.ajax({
         type: "GET",
         url: `${origin}/api/Invoice/InvoiceDetails/${id}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
         success: function (data) {
           Swal.fire({
             title: "Are you sure?",
@@ -443,6 +504,10 @@
               $.ajax({
                 type: "DELETE",
                 url: `${origin}/api/Invoice/InvoiceDetails/${data.id}`,
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+
                 success: function (data) {
                   Swal.fire(
                     "Deleted!",

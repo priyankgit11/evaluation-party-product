@@ -7,11 +7,13 @@ using Microsoft.EntityFrameworkCore.Update;
 using EvaluationPartyProduct.DTO;
 using EvaluationPartyProduct.Models;
 using EvaluationPartyProduct.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EvaluationPartyProduct.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AssignPartyController : ControllerBase
     {
         public EvaluationDbContext context { get; }

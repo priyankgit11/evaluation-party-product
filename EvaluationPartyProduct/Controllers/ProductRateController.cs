@@ -7,11 +7,13 @@ using EvaluationPartyProduct.DTO;
 using EvaluationPartyProduct.Models;
 using EvaluationPartyProduct.Helpers;
 using System.Runtime.InteropServices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EvaluationPartyProduct.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductRateController : ControllerBase
     {
         private readonly IMapper mapper;

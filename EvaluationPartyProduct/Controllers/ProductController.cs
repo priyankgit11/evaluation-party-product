@@ -5,11 +5,13 @@ using EvaluationPartyProduct.Models;
 using EvaluationPartyProduct.DTO;
 using EvaluationPartyProduct.Helpers;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EvaluationPartyProduct.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductController : ControllerBase
     {
         public EvaluationDbContext context { get; set; }
@@ -43,6 +45,13 @@ namespace EvaluationPartyProduct.Controllers
                                  where assign.PartyId == partyId
                                  select product;
             var products = await commonProducts.ToListAsync();
+            var productsDTO = mapper.Map<List<ProductDTO>>(products);
+            return productsDTO;
+        }
+        [HttpGet("getDistinct")]
+        public async Task<List<ProductDTO>> GetDistinct()
+        {
+            var products = await context.TblInvoiceDetails.Include(i=>i.Product).Select(i=>i.Product).Distinct().ToListAsync();
             var productsDTO = mapper.Map<List<ProductDTO>>(products);
             return productsDTO;
         }

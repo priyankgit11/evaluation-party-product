@@ -23,7 +23,11 @@
     />
     <link rel="stylesheet" href="index.css" />
 
-    <style></style>
+    <style>
+      .nav-link {
+        cursor: pointer !important;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark px-5">
@@ -59,6 +63,17 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/Invoice/index.html">Invoice</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Invoice/index.html">
+              <button
+                type="button"
+                class="btn btn-outline-success"
+                id="btn-logout"
+              >
+                Logout
+              </button>
+            </a>
           </li>
         </ul>
       </div>
@@ -115,10 +130,30 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
+    //Page Authorization checking
+    var token = null;
+    if (isItemExists("token")) {
+      token = localStorage.getItem("token");
+    } else {
+      window.location.replace(`${origin}/Login/index.html`);
+    }
+    function isItemExists(key) {
+      return localStorage.getItem(key) !== null;
+    }
+
     $(document).ready(function () {
+      $(document).on("click", "#btn-logout", function (e) {
+        window.localStorage.removeItem("token");
+        window.location.reload();
+      });
+
       $.ajax({
         url: `${origin}/api/Party`,
         type: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
         dataType: "json",
         dataSrc: "",
         success: function (data) {
@@ -135,6 +170,10 @@
       $.ajax({
         url: `${origin}/api/Product`,
         type: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
         dataType: "json",
         dataSrc: "",
         success: function (data) {
@@ -165,6 +204,7 @@
         data: JSON.stringify(dataSource),
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         dataType: "json",
         success: function () {

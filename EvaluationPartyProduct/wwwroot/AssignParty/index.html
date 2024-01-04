@@ -38,6 +38,9 @@
         right: 1em;
         bottom: 1em;
       }
+      .nav-link {
+        cursor: pointer !important;
+      }
     </style>
   </head>
   <body>
@@ -72,6 +75,17 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/Invoice/index.html">Invoice</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Invoice/index.html">
+              <button
+                type="button"
+                class="btn btn-outline-success"
+                id="btn-logout"
+              >
+                Logout
+              </button>
+            </a>
           </li>
         </ul>
       </div>
@@ -153,6 +167,17 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
+    //Page Authorization checking
+    var token = null;
+    if (isItemExists("token")) {
+      token = localStorage.getItem("token");
+    } else {
+      window.location.replace(`${origin}/Login/index.html`);
+    }
+    function isItemExists(key) {
+      return localStorage.getItem(key) !== null;
+    }
+
     //SELECTING ELEMENTS
     var editId = 0;
     var table = $("#dtExample").DataTable({
@@ -160,6 +185,10 @@
       ajax: {
         url: `${origin}/api/AssignParty`,
         type: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
         dataType: "json",
         dataSrc: "",
       },
@@ -199,6 +228,10 @@
 
     //FUNCTIONS
     $(document).ready(function () {
+      $(document).on("click", "#btn-logout", function (e) {
+        window.localStorage.removeItem("token");
+        window.location.reload();
+      });
       table.ajax.reload();
       $(document).on("click", ".editBtn", function (e) {
         const id = $(this).attr("id");
@@ -240,6 +273,10 @@
       $.ajax({
         type: "GET",
         url: `${origin}/api/AssignParty/${id}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
         success: function (data) {
           Swal.fire({
             title: "Are you sure?",
@@ -256,6 +293,10 @@
               $.ajax({
                 type: "DELETE",
                 url: `${origin}/api/AssignParty/${data.id}`,
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+
                 success: function (data) {
                   Swal.fire(
                     "Deleted!",
@@ -279,8 +320,12 @@
       $.ajax({
         type: "GET",
         url: `${origin}/api/AssignParty/${editId}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         dataType: "json",
         dataSrc: "",
+
         success: function (data) {
           console.log(data);
           partyVal = data.partyId;
@@ -288,6 +333,10 @@
           $.ajax({
             url: `${origin}/api/Party`,
             type: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+
             dataType: "json",
             dataSrc: "",
             success: function (data) {
@@ -306,6 +355,10 @@
           $.ajax({
             url: `${origin}/api/Product`,
             type: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+
             dataType: "json",
             dataSrc: "",
             success: function (data) {
@@ -350,6 +403,7 @@
         data: JSON.stringify(formData),
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         dataType: "json",
         success: function () {

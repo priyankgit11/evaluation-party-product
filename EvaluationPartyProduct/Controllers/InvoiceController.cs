@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
 using EvaluationPartyProduct.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EvaluationPartyProduct.DTO;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using System.Globalization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EvaluationPartyProduct.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class InvoiceController : ControllerBase
     {
         private EvaluationDbContext context;
@@ -61,13 +64,97 @@ namespace EvaluationPartyProduct.Controllers
             {
                 query = sort ? context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderBy(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize)
                     :
-                    context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderByDescending(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize) ;
+                    context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderByDescending(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize);
             }
 
             var invoices = await query.ToListAsync();
             var invoicesDTO = mapper.Map<List<InvoiceDTO>>(invoices);
             await CalculateGrandTotals(invoicesDTO);
             return Ok(invoicesDTO);
+        }
+
+        [HttpGet("test")]
+        public async Task<ActionResult<List<InvoiceDTO>>> Get(DateTime dateTime, [FromQuery] string searchProducts = "", [FromQuery(Name = "order[0][column]")] int sortColumn = 0, int start = 0, int length = 10, [FromQuery(Name = "search[value]")] string search = "",
+        [FromQuery(Name = "order[0][dir]")] string sortDirection = "asc", [FromQuery] string startDate = "", [FromQuery] string endDate = "")
+        {
+            var invoiceDetails = context.TblInvoiceDetails.Include(i => i.Invoice).ThenInclude(i => i.Party).Include(p => p.Product).Where(p => p.Invoice.Party.PartyName.Contains(search));
+
+            //Implement search logic for multiple items within a column
+            string[] searchTerms = searchProducts.Split(", ");
+            if (searchTerms != null && searchTerms.Length > 0)
+            {
+                // Assuming 'name' is the column to search
+                var temp = invoiceDetails.Where(i => searchTerms.Any(p => i.Product.ProductName.Contains(p)));
+                invoiceDetails = temp;
+            }
+            DateTime startingDate;
+            DateTime endingDate;
+            if(DateTime.TryParseExact(startDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out startingDate)
+                &&
+                DateTime.TryParseExact(startDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out endingDate))
+            {
+                invoiceDetails = invoiceDetails.Where(i => i.Invoice.Date >= startingDate && i.Invoice.Date <= endingDate);
+            }
+            
+            var invoices = invoiceDetails.Select(p => p.Invoice).Distinct();
+            // Apply pagination using 'start' and 'length' parameters
+            var result = await invoices.Skip(start).Take(length).ToListAsync();
+            var invoiceDTO = mapper.Map<List<InvoiceDTO>>(result);
+            await CalculateGrandTotals(invoiceDTO);
+            switch (sortColumn)
+            {
+                case 1:
+                    if (sortDirection == "asc")
+                    {
+                        invoiceDTO = invoiceDTO.OrderBy(e => e.PartyName).ToList();
+                        // Similar lines for other sorting cases
+                    }
+                    else
+                    {
+                        invoiceDTO = invoiceDTO.OrderByDescending(e => e.PartyName).ToList();
+                        // Similar lines for other sorting cases
+                    }
+                    break;
+                case 2:
+                    if (sortDirection == "asc")
+                    {
+                        invoiceDTO = invoiceDTO.OrderBy(e => e.Date).ToList();
+                        // Similar lines for other sorting cases
+                    }
+                    else
+                    {
+                        invoiceDTO = invoiceDTO.OrderByDescending(e => e.Date).ToList();
+                        // Similar lines for other sorting cases
+                    }
+                    break;
+                // Add more cases for other columns as needed
+
+                case 3:
+                    if (sortDirection == "asc")
+                    {
+                        invoiceDTO = invoiceDTO.OrderBy(e => e.GrandTotal).ToList();
+                        // Similar lines for other sorting cases
+                    }
+                    else
+                    {
+                        invoiceDTO = invoiceDTO.OrderByDescending(e => e.GrandTotal).ToList();
+                        // Similar lines for other sorting cases
+                    }
+                    break;
+                default:
+                    if (sortDirection == "asc")
+                    {
+                        invoiceDTO = invoiceDTO.OrderBy(e => e.Id).ToList();
+                        // Similar lines for other sorting cases
+                    }
+                    else
+                    {
+                        invoiceDTO = invoiceDTO.OrderByDescending(e => e.PartyName).ToList();
+                        // Similar lines for other sorting cases
+                    }
+                    break;
+            }
+            return Ok(invoiceDTO);
         }
 
         [HttpGet("InvoiceDetails")]
@@ -80,16 +167,16 @@ namespace EvaluationPartyProduct.Controllers
             IQueryable<TblInvoiceDetail> query;
             if (!string.IsNullOrEmpty(filter))
             {
-                query = sort ? context.TblInvoiceDetails.Include(i => i.Product).Include(i=>i.Invoice).ThenInclude(i=>i.Party).OrderBy(i => i.Product.ProductName).Skip((page - 1) * pageSize).Take(pageSize)
+                query = sort ? context.TblInvoiceDetails.Include(i => i.Product).Include(i => i.Invoice).ThenInclude(i => i.Party).OrderBy(i => i.Product.ProductName).Skip((page - 1) * pageSize).Take(pageSize)
                     :
-                    context.TblInvoiceDetails.Include(i => i.Product).Include(i=>i.Invoice).ThenInclude(i=>i.Party).OrderByDescending(i => i.Product.ProductName).Skip((page - 1) * pageSize).Take(pageSize)
+                    context.TblInvoiceDetails.Include(i => i.Product).Include(i => i.Invoice).ThenInclude(i => i.Party).OrderByDescending(i => i.Product.ProductName).Skip((page - 1) * pageSize).Take(pageSize)
 ;
             }
             else
             {
-                query = sort ? context.TblInvoiceDetails.Include(i => i.Product).Include(i=>i.Invoice).ThenInclude(i=>i.Party).Where(i => i.Product.ProductName.Contains(filter)).OrderBy(i => i.Product.ProductName).Skip((page - 1) * pageSize).Take(pageSize)
+                query = sort ? context.TblInvoiceDetails.Include(i => i.Product).Include(i => i.Invoice).ThenInclude(i => i.Party).Where(i => i.Product.ProductName.Contains(filter)).OrderBy(i => i.Product.ProductName).Skip((page - 1) * pageSize).Take(pageSize)
                     :
-                    context.TblInvoiceDetails.Include(i => i.Product).Include(i=>i.Invoice).ThenInclude(i=>i.Party).Where(i => i.Product.ProductName.Contains(filter)).OrderByDescending(i => i.Product.ProductName).Skip((page - 1) * pageSize).Take(pageSize)
+                    context.TblInvoiceDetails.Include(i => i.Product).Include(i => i.Invoice).ThenInclude(i => i.Party).Where(i => i.Product.ProductName.Contains(filter)).OrderByDescending(i => i.Product.ProductName).Skip((page - 1) * pageSize).Take(pageSize)
 ;
             }
 
@@ -150,7 +237,7 @@ namespace EvaluationPartyProduct.Controllers
             context.Add(invoiceDetail);
             await context.SaveChangesAsync();
             var invoiceDetailDTO = mapper.Map<InvoiceDetailDTO>(invoiceDetail);
-            invoiceDetailDTO.Total = invoiceDetailDTO.Quantity * invoiceDetailDTO.Rate; 
+            invoiceDetailDTO.Total = invoiceDetailDTO.Quantity * invoiceDetailDTO.Rate;
             return Ok(invoiceDetailDTO);
         }
         [HttpDelete("{id:int}")]

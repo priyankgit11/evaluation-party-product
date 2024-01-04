@@ -431,3 +431,4 @@ D:\Computer\Company\EvaluationPartyProduct\EvaluationPartyProduct\obj\Debug\net8
 D:\Computer\Company\EvaluationPartyProduct\EvaluationPartyProduct\obj\Debug\net8.0\ref\EvaluationPartyProduct.dll
 D:\Tutorials\c#\evaluation-party-product\EvaluationPartyProduct\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Computer\Company\EvaluationPartyProduct\EvaluationPartyProduct\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Tutorials\c#\evaluation-party-product\EvaluationPartyProduct\bin\Debug\net8.0\System.Linq.Dynamic.Core.dll

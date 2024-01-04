@@ -23,7 +23,11 @@
     />
     <link rel="stylesheet" href="index.css" />
 
-    <style></style>
+    <style>
+      .nav-link {
+        cursor: pointer !important;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark px-5">
@@ -103,6 +107,20 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
+    //Page Authorization checking
+    var token = null;
+    if (isItemExists("token")) {
+      token = localStorage.getItem("token");
+    } else {
+      window.location.replace(`${origin}/Login/index.html`);
+    }
+    function isItemExists(key) {
+      return localStorage.getItem(key) !== null;
+    }
+    $(document).on("click", "#btn-logout", function (e) {
+      window.localStorage.removeItem("token");
+      window.location.reload();
+    });
     $("#productForm").submit(function (e) {
       e.preventDefault();
       const name =
@@ -118,6 +136,7 @@
         data: JSON.stringify(dataSource),
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         dataType: "json",
         success: function () {
