@@ -78,7 +78,7 @@
             <a class="nav-link" href="/Invoice/index.html">Invoice</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/Invoice/index.html">
+            <a class="nav-link" href="/Login/index.html">
               <button
                 type="button"
                 class="btn btn-outline-success"
@@ -149,6 +149,11 @@
       window.location.replace(`${origin}/Login/index.html`);
     }
 
+    function isItemExists(key) {
+      return localStorage.getItem(key) !== null;
+    }
+
+    var currentUrl = window.location.pathname;
     $(document).ready(function () {
       $(document).on("click", "#btn-logout", function (e) {
         window.localStorage.removeItem("token");

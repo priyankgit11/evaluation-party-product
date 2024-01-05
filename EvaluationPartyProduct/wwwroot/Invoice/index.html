@@ -21,6 +21,11 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css"
     />
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+
     <style>
       .btn-orange {
         background-color: white;
@@ -77,7 +82,7 @@
             <a class="nav-link" href="/Invoice/index.html">Invoice</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/Invoice/index.html">
+            <a class="nav-link" href="/Login/index.html">
               <button
                 type="button"
                 class="btn btn-outline-success"
@@ -102,6 +107,32 @@
       </div>
       <hr />
       <div class="container">
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="startDate">Start Date:</label>
+            <input
+              type="date"
+              class="form-control datepicker"
+              id="startDate"
+              name="startDate"
+              placeholder="Select start date"
+            />
+          </div>
+          <div class="form-group col-md-3">
+            <label for="endDate">End Date:</label>
+            <input
+              type="date"
+              class="form-control datepicker"
+              id="endDate"
+              name="endDate"
+              placeholder="Select end date"
+            />
+          </div>
+          <select class="form-control" id="selectDropdown" multiple="multiple">
+            <!-- Add more options as needed -->
+          </select>
+        </div>
+
         <table
           width="100%"
           id="dtExample"
@@ -218,6 +249,7 @@
   <!-- Bootstrap JS -->
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
   <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -241,15 +273,28 @@
     var table = $("#dtExample").DataTable({
       dom: "Bfrtip",
       ajax: {
-        url: `${origin}/api/Invoice`,
         type: "GET",
+        url: `${origin}/api/Invoice`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
-
         dataType: "json",
-        dataSrc: "",
+        dataSrc: function (response) {
+          return response.data; // Use the 'data' field from the response
+        },
+        data: function (d) {
+          const productList = $("#selectDropdown").val();
+          const str = productList.join(", ");
+          if (productList.length !== 0) d.searchProducts = str;
+          console.log("SearchProduct", d.searchProducts);
+          const startDate = String($("#startDate").val());
+          const endDate = String($("#endDate").val());
+          d.startDate = startDate;
+          d.endDate = endDate;
+        },
       },
+      processing: true,
+      serverSide: true,
       columns: [
         { title: "ID", data: "id", searchable: false },
         { title: "Party Name", data: "partyName" },
@@ -292,6 +337,7 @@
       ],
 
       paging: true,
+      suppressWarnings: true,
       info: true,
       language: {
         emptyTable: "No data available",
@@ -335,7 +381,7 @@
             <div class="btn-delete">
               <button class="btn btn-danger text-light" onclick="deleteInvoiceDetailConfirmation(${row.id})">Delete</button>
             </div>
-            
+
           </div>
         `;
             return div;
@@ -344,6 +390,7 @@
       ],
 
       paging: true,
+      suppressWarnings: true,
       info: true,
       language: {
         emptyTable: "No data available",
@@ -355,11 +402,61 @@
     }
     //FUNCTIONS
     $(document).ready(function () {
+      console.log(table.ajax.url());
+      // LOGOUT BUTTON FUNCTIONALITY
       $(document).on("click", "#btn-logout", function (e) {
         window.localStorage.removeItem("token");
         window.location.reload();
       });
 
+      // START DATE
+      $(document).on("change", "#startDate", function (e) {
+        console.log("date date");
+        const today = new Date();
+        const formattedDate = getFormattedDate(today);
+        $("#endDate").val(formattedDate);
+        table.ajax.reload();
+      });
+
+      function getFormattedDate(date) {
+        let year = date.getFullYear();
+        let month = (1 + date.getMonth()).toString().padStart(2, "0");
+        let day = date.getDate().toString().padStart(2, "0");
+
+        return year + "-" + month + "-" + day;
+      }
+      // POPULATE DROPDOWN SELECTION
+      $.ajax({
+        url: `${origin}/api/Product/getDistinct`,
+        type: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
+        dataType: "json",
+        dataSrc: "",
+        success: function (data) {
+          let dropdownHtml = "";
+          Array.from(data, function (item) {
+            dropdownHtml += `<option value=${item.productName}>${item.productName}</option>`;
+          });
+          $("#selectDropdown").append(dropdownHtml);
+        },
+        error: function (err) {
+          console.error(err);
+        },
+      });
+
+      // RELOAD TABLE ON SELECTION OF PRODUCT SELECT
+      $(document).on("click", "#selectDropdown", function (e) {
+        table.ajax.reload();
+      });
+
+      //   SearchBar on change
+      $(document).on("input", "#searchInput", function (e) {
+        console.log("Hello");
+        table.ajax.reload();
+      });
       var clickedButtonId = null;
       table.ajax.reload();
       // INVOICE LIST EDIT BUTTON
@@ -449,6 +546,14 @@
         }
       });
     });
+
+    function collectInputData() {
+      const data = {
+        searchParty: $("#searchInput").val(),
+      };
+      console.log("Input", data);
+      return data;
+    }
 
     function collectData() {
       const data = {

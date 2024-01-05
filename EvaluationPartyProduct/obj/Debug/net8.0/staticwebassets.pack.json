@@ -17,10 +17,6 @@
       "PackagePath": "staticwebassets\\Invoice\\index.html"
     },
     {
-      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Invoice\\test.html",
-      "PackagePath": "staticwebassets\\Invoice\\test.html"
-    },
-    {
       "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Invoice\\view.html",
       "PackagePath": "staticwebassets\\Invoice\\view.html"
     },

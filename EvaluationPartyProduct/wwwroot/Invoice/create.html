@@ -73,7 +73,7 @@
             <a class="nav-link" href="/Invoice/index.html">Invoice</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/Invoice/index.html">
+            <a class="nav-link" href="/Login/index.html">
               <button
                 type="button"
                 class="btn btn-outline-success"
@@ -207,6 +207,7 @@
     var dataExists = false;
     var globalInvoiceId = 0;
     var table = null;
+    var editInvoiceDetailId = 0;
     let clickedButtonId = null;
 
     /////////// FUNCTIONS
@@ -312,6 +313,87 @@
         }
       });
     });
+
+    $(document).on("click", ".editInvoiceBtn", function (e) {
+      const id = $(this).attr("id");
+      editInvoiceDetailId = extractNumber(id);
+      setEditData();
+      $(".div-btn-add").hide();
+      $(".div-btn-edit").show();
+    });
+
+    function extractNumber(txt) {
+      var numb = txt.match(/\d/g);
+      numb = numb.join("");
+      return numb;
+    }
+
+    function setEditData() {
+      $.ajax({
+        url: `${origin}/api/Invoice/InvoiceDetails/${editInvoiceDetailId}`,
+        type: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
+        dataType: "json",
+        dataSrc: "",
+        success: function (data) {
+          $("#productDropdown").val(data.productId);
+          $("#productRate").val(data.rate);
+          $("#quantity").val(data.quantity);
+        },
+        error: function (err) {
+          console.error(err);
+        },
+      });
+    }
+
+    $(document).on("submit", "#createForm", function (e) {
+      e.preventDefault();
+      const data = collectInvoiceData();
+      console.log("Clicked Button", clickedButtonId);
+      if (clickedButtonId === "btn-add") {
+        $.ajax({
+          type: "POST",
+          url: `${origin}/api/Invoice/InvoiceDetails`,
+          data: JSON.stringify(data),
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          dataType: "json",
+          success: function () {
+            editTable.ajax.url(getDynamicURL()).load();
+            $(".div-btn-add").show();
+            $(".div-btn-edit").hide();
+          },
+          error: function (err) {
+            console.error(err);
+          },
+        });
+      } else {
+        $.ajax({
+          type: "PUT",
+          url: `${origin}/api/Invoice/InvoiceDetails/${editInvoiceDetailId}`,
+          data: JSON.stringify(data),
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          dataType: "json",
+          success: function () {
+            editTable.ajax.url(getDynamicURL()).load();
+            $(".div-btn-add").show();
+            $(".div-btn-edit").hide();
+          },
+          error: function (err) {
+            console.error(err);
+          },
+        });
+      }
+    });
+
     // INITIALIZE DATABASE
     function initializeDatatable() {
       table = $("#addDataTable").DataTable({
@@ -358,6 +440,7 @@
         ],
 
         paging: true,
+        suppressWarnings: true,
         info: true,
         language: {
           emptyTable: "No data available",

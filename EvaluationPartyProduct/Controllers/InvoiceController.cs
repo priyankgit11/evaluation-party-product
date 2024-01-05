@@ -47,34 +47,7 @@ namespace EvaluationPartyProduct.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<InvoiceDTO>>> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string filter = "", bool sort = true)
-        {
-            if (page > pageSize || page <= 0 || pageSize <= 0)
-            {
-                return BadRequest();
-            }
-            IQueryable<TblInvoice> query;
-            if (!string.IsNullOrEmpty(filter))
-            {
-                query = sort ? context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderBy(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize)
-                    :
-                    context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderByDescending(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize);
-            }
-            else
-            {
-                query = sort ? context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderBy(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize)
-                    :
-                    context.TblInvoices.Include(i => i.Party).Where(i => i.Party.PartyName.Contains(filter)).OrderByDescending(i => i.Party.PartyName).Skip((page - 1) * pageSize).Take(pageSize);
-            }
-
-            var invoices = await query.ToListAsync();
-            var invoicesDTO = mapper.Map<List<InvoiceDTO>>(invoices);
-            await CalculateGrandTotals(invoicesDTO);
-            return Ok(invoicesDTO);
-        }
-
-        [HttpGet("test")]
-        public async Task<ActionResult<List<InvoiceDTO>>> Get(DateTime dateTime, [FromQuery] string searchProducts = "", [FromQuery(Name = "order[0][column]")] int sortColumn = 0, int start = 0, int length = 10, [FromQuery(Name = "search[value]")] string search = "",
+        public async Task<ActionResult<List<InvoiceDTO>>> Get([FromQuery] string searchProducts = "", [FromQuery(Name = "order[0][column]")] int sortColumn = 0, int start = 0, int length = 10, [FromQuery(Name = "search[value]")] string search = "",
         [FromQuery(Name = "order[0][dir]")] string sortDirection = "asc", [FromQuery] string startDate = "", [FromQuery] string endDate = "")
         {
             var invoiceDetails = context.TblInvoiceDetails.Include(i => i.Invoice).ThenInclude(i => i.Party).Include(p => p.Product).Where(p => p.Invoice.Party.PartyName.Contains(search));
@@ -89,17 +62,19 @@ namespace EvaluationPartyProduct.Controllers
             }
             DateTime startingDate;
             DateTime endingDate;
-            if(DateTime.TryParseExact(startDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out startingDate)
+
+            if (DateTime.TryParseExact(startDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out startingDate)
                 &&
-                DateTime.TryParseExact(startDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out endingDate))
+                DateTime.TryParseExact(endDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out endingDate))
             {
                 invoiceDetails = invoiceDetails.Where(i => i.Invoice.Date >= startingDate && i.Invoice.Date <= endingDate);
             }
-            
+
             var invoices = invoiceDetails.Select(p => p.Invoice).Distinct();
             // Apply pagination using 'start' and 'length' parameters
-            var result = await invoices.Skip(start).Take(length).ToListAsync();
-            var invoiceDTO = mapper.Map<List<InvoiceDTO>>(result);
+            var invoiceList = await invoices.ToListAsync();
+            //var result = await invoices.Skip(start).Take(length).ToListAsync();
+            var invoiceDTO = mapper.Map<List<InvoiceDTO>>(invoiceList);
             await CalculateGrandTotals(invoiceDTO);
             switch (sortColumn)
             {
@@ -154,7 +129,18 @@ namespace EvaluationPartyProduct.Controllers
                     }
                     break;
             }
-            return Ok(invoiceDTO);
+            int totalRecords = invoiceDTO.Count();
+            var filteredDTO = invoiceDTO.Skip(start).Take(length);
+             
+            int filteredRecords = filteredDTO.Count();
+            var response = new
+            {
+                recordsTotal = totalRecords,
+                recordsFiltered = filteredRecords,
+                data = filteredDTO
+            };
+
+            return Ok(response);
         }
 
         [HttpGet("InvoiceDetails")]

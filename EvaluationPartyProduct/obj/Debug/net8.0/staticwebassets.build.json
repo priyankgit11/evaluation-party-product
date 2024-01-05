@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "X+Y98RaNO1OF7WCvBOqLZRqrkAzpM7CqocEhcBQm73E=",
+  "Hash": "ExtzNj+2Nj6INidYKQw2wnyV4rcy/Rd6Sw+0sLY6s/0=",
   "Source": "EvaluationPartyProduct",
   "BasePath": "_content/EvaluationPartyProduct",
   "Mode": "Default",
@@ -91,25 +91,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Invoice\\index.html"
-    },
-    {
-      "Identity": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Invoice\\test.html",
-      "SourceId": "EvaluationPartyProduct",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\",
-      "BasePath": "_content/EvaluationPartyProduct",
-      "RelativePath": "Invoice/test.html",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Invoice\\test.html"
     },
     {
       "Identity": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Invoice\\view.html",
