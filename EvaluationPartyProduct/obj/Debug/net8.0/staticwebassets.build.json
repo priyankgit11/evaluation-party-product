@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ExtzNj+2Nj6INidYKQw2wnyV4rcy/Rd6Sw+0sLY6s/0=",
+  "Hash": "RrMIyl2gxpCFEdz/KgLsD7810OdTbOSzBHaur407PpU=",
   "Source": "EvaluationPartyProduct",
   "BasePath": "_content/EvaluationPartyProduct",
   "Mode": "Default",
@@ -129,6 +129,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Login\\index.html"
+    },
+    {
+      "Identity": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Login\\signup.html",
+      "SourceId": "EvaluationPartyProduct",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\",
+      "BasePath": "_content/EvaluationPartyProduct",
+      "RelativePath": "Login/signup.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Login\\signup.html"
     },
     {
       "Identity": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\create.html",

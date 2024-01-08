@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Sign-Up</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -63,32 +63,32 @@
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <h2>Login</h2>
-          <form id="loginForm">
+          <h2>Signup</h2>
+          <form id="signupForm">
             <div class="mb-3">
-              <label for="loginEmail" class="form-label">Email address</label>
+              <label for="signupEmail" class="form-label">Email address</label>
               <input
                 type="email"
                 class="form-control"
-                id="loginEmail"
+                id="signupEmail"
                 aria-describedby="emailHelp"
                 placeholder="Enter email"
               />
             </div>
             <div class="mb-3">
-              <label for="loginPassword" class="form-label">Password</label>
+              <label for="signupPassword" class="form-label">Password</label>
               <input
                 type="password"
                 class="form-control"
-                id="loginPassword"
+                id="signupPassword"
                 placeholder="Password"
               />
             </div>
             <div class="invalid-input text-danger my-2"></div>
             <div class="navigate my-2">
-              <a href="signup.html">Create A New Account?</a>
+              <a href="index.html">Already have an account? Go to Login</a>
             </div>
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary">Signup</button>
           </form>
         </div>
       </div>
@@ -126,19 +126,36 @@
         return firstFolder;
       }
 
-      $(document).on("submit", "#loginForm", function (e) {
+      function firstFolder(path) {
+        // Get the current URL path
+
+        // Remove leading and trailing slashes
+        path = path.replace(/^\/|\/$/g, "");
+
+        // Split the path into an array of segments
+        var pathSegments = path.split("/");
+
+        // Get the first folder name (if available)
+        var firstFolder = pathSegments.length > 0 ? pathSegments[0] : null;
+        console.log(firstFolder);
+        return firstFolder;
+      }
+      $(document).on("submit", "#signupForm", function (e) {
         e.preventDefault();
-        const JsonData = collectData("login");
-        console.log(JsonData);
-        let response;
+        const JsonData = collectData("signup");
         $.ajax({
           type: "POST",
-          url: `${origin}/api/Auth/login`,
+          url: `${origin}/api/Auth/register`,
           data: JSON.stringify(JsonData),
           headers: {
             "Content-type": "application/json",
           },
           success: function (token) {
+            Swal.fire({
+              icon: "success",
+              title: "User Created!",
+              text: "The user has been successfully created.",
+            });
             localStorage.setItem("token", token);
             window.location.replace(`${origin}/Party/index.html`);
           },
@@ -152,8 +169,8 @@
     function collectData(formName) {
       let data;
       data = {
-        username: String($("#loginEmail").val()).trim(),
-        password: String($("#loginPassword").val()).trim(),
+        username: String($("#signupEmail").val()).trim(),
+        password: String($("#signupPassword").val()).trim(),
       };
       return data;
     }

@@ -347,6 +347,7 @@
     // EDIT DATA TABLE
     var editTable = $("#editDataTable").DataTable({
       dom: "Bfrtip",
+      suppressWarnings: true,
       ajax: {
         type: "GET",
         url: getDynamicURL(),
@@ -390,7 +391,6 @@
       ],
 
       paging: true,
-      suppressWarnings: true,
       info: true,
       language: {
         emptyTable: "No data available",
@@ -402,6 +402,17 @@
     }
     //FUNCTIONS
     $(document).ready(function () {
+      var currentUrl = window.location.pathname;
+
+      // Loop through each navbar link and check if its href matches the current URL
+      $(".nav-link").each(function () {
+        if (firstFolder($(this).attr("href")) === firstFolder(currentUrl)) {
+          // Add a class to highlight the active link
+          $(this).addClass("active");
+        } else {
+          $(this).removeClass("active");
+        }
+      });
       console.log(table.ajax.url());
       // LOGOUT BUTTON FUNCTIONALITY
       $(document).on("click", "#btn-logout", function (e) {

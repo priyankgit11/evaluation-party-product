@@ -25,6 +25,10 @@
       "PackagePath": "staticwebassets\\Login\\index.html"
     },
     {
+      "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Login\\signup.html",
+      "PackagePath": "staticwebassets\\Login\\signup.html"
+    },
+    {
       "Id": "D:\\Tutorials\\c#\\evaluation-party-product\\EvaluationPartyProduct\\wwwroot\\Party\\create.html",
       "PackagePath": "staticwebassets\\Party\\create.html"
     },

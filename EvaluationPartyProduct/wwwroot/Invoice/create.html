@@ -212,6 +212,32 @@
 
     /////////// FUNCTIONS
     $(document).ready(function () {
+      var currentUrl = window.location.pathname;
+
+      // Loop through each navbar link and check if its href matches the current URL
+      $(".nav-link").each(function () {
+        if (firstFolder($(this).attr("href")) === firstFolder(currentUrl)) {
+          // Add a class to highlight the active link
+          $(this).addClass("active");
+        } else {
+          $(this).removeClass("active");
+        }
+      });
+
+      function firstFolder(path) {
+        // Get the current URL path
+
+        // Remove leading and trailing slashes
+        path = path.replace(/^\/|\/$/g, "");
+
+        // Split the path into an array of segments
+        var pathSegments = path.split("/");
+
+        // Get the first folder name (if available)
+        var firstFolder = pathSegments.length > 0 ? pathSegments[0] : null;
+        console.log(firstFolder);
+        return firstFolder;
+      }
       $(document).on("click", "#btn-logout", function (e) {
         window.localStorage.removeItem("token");
         window.location.reload();

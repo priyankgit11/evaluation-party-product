@@ -43,14 +43,14 @@ namespace EvaluationPartyProduct.Controllers
             var user = mapper.Map<TblUser>(userDTO);
             context.Add(user);
             await context.SaveChangesAsync();
-            return Ok("Registered Successfully");
+            return await Login(userDTO);
         }
-        [HttpPost("login")]
+        [HttpPost("login",Name ="loginUser")]
         public async Task<ActionResult<string>> Login(UserDTO userDTO)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var user = await context.TblUsers.FirstOrDefaultAsync(i => i.Username == userDTO.Username && i.Password == userDTO.Password);
-            if (user == null) return BadRequest("User Not Found");
+            if (user == null) return BadRequest("Either Username Or Password is Wrong");
             String token = CreateToken(user);
             return Ok(token);
         }
