@@ -67,7 +67,7 @@ namespace EvaluationPartyProduct.Controllers
                 &&
                 DateTime.TryParseExact(endDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out endingDate))
             {
-                invoiceDetails = invoiceDetails.Where(i => i.Invoice.Date >= startingDate && i.Invoice.Date <= endingDate);
+                invoiceDetails = invoiceDetails.Where(i => i.Invoice.Date.Date >= startingDate.Date && i.Invoice.Date.Date <= endingDate.Date);
             }
 
             var invoices = invoiceDetails.Select(p => p.Invoice).Distinct();
