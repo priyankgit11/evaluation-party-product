@@ -19,7 +19,7 @@
     />
   </head>
   <body>
-    <div class="container">
+    <div class="container my-3">
       <table id="myDataTable">
         <!-- DataTable content -->
       </table>
@@ -109,7 +109,7 @@
           pdfData.forEach((row) => {
             content += `<tr><td>${row["partyName"]}</td><td>${row["productName"]}</td><td>${row["rate"]}</td><td>${row["quantity"]}</td><td>${row["total"]}</td></tr>`; // Adjust these columns based on your data structure
           });
-          content += `</table><p><strong>Grand Total: $${formattedTotal}</strong></p>`;
+          content += `</table><p><strong>Grand Total: ${formattedTotal}</strong></p>`;
 
           // Add content to PDF
           doc.fromHTML(content, 10, 10);

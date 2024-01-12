@@ -14,29 +14,25 @@ namespace EvaluationPartyProduct.Controllers
     [Authorize]
     public class ProductController : ControllerBase
     {
-        public EvaluationDbContext context { get; set; }
+        private EvaluationDbContext context { get; set; }
+        private ControllerHelperFunctions helpers;
         private readonly IMapper mapper;
 
         public ProductController(EvaluationDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
-        }
-        public async Task<bool> checkProductExists(string name)
-        {
-            var party = await context.TblProducts.FirstOrDefaultAsync(i => i.ProductName == name);
-            if (party == null) return false;
-            return true;
+            helpers = new ControllerHelperFunctions(this.context);
         }
         [HttpGet]
-        public async Task<List<ProductDTO>> Get()
+        public async Task<List<ProductDTO>> GetProduct()
         {
             var products = await context.TblProducts.ToListAsync();
             var productsDTO = mapper.Map<List<ProductDTO>>(products);
             return productsDTO;
         }
         [HttpGet("assigned/{id:int}")]
-        public async Task<List<ProductDTO>> GetOnlyAssigned(int id)
+        public async Task<List<ProductDTO>> GetProductAssigned(int id)
         {
             var partyId = id;
             var commonProducts = from product in context.TblProducts
@@ -49,14 +45,14 @@ namespace EvaluationPartyProduct.Controllers
             return productsDTO;
         }
         [HttpGet("getDistinct")]
-        public async Task<List<ProductDTO>> GetDistinct()
+        public async Task<List<ProductDTO>> GetProductDistinct()
         {
-            var products = await context.TblInvoiceDetails.Include(i=>i.Product).Select(i=>i.Product).Distinct().ToListAsync();
+            var products = await context.TblInvoiceDetails.Include(i => i.Product).Select(i => i.Product).Distinct().ToListAsync();
             var productsDTO = mapper.Map<List<ProductDTO>>(products);
             return productsDTO;
         }
         [HttpGet("{id:int}", Name = "getProduct")]
-        public async Task<ActionResult<ProductDTO>> Get(int id)
+        public async Task<ActionResult<ProductDTO>> GetSpecificProduct(int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var products = await context.TblProducts.FirstOrDefaultAsync(x => x.Id == id);
@@ -65,10 +61,10 @@ namespace EvaluationPartyProduct.Controllers
             return Ok(productsDTO);
         }
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] ProductCreationDTO productCreation)
+        public async Task<ActionResult> PostProduct([FromBody] ProductCreationDTO productCreation)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (await checkProductExists(productCreation.ProductName)) return Conflict("Duplicate data is not allowed.");
+            if (await helpers.CheckProductExists(productCreation.ProductName)) return Conflict("Duplicate data is not allowed.");
             var product = mapper.Map<TblProduct>(productCreation);
             context.Add(product);
             await context.SaveChangesAsync();
@@ -76,7 +72,7 @@ namespace EvaluationPartyProduct.Controllers
             return new CreatedAtRouteResult("getProduct", new { Id = productDTO.Id }, productDTO);
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> DeleteProduct(int id)
         {
             var products = await context.TblProducts.FirstOrDefaultAsync(i => i.Id == id);
             if (products == null) return NotFound();
@@ -85,10 +81,10 @@ namespace EvaluationPartyProduct.Controllers
             return NoContent();
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] ProductCreationDTO productCreation)
+        public async Task<ActionResult> PutProduct(int id, [FromBody] ProductCreationDTO productCreation)
         {
             var product = mapper.Map<TblProduct>(productCreation);
-            if (await checkProductExists(productCreation.ProductName)) return Conflict("Duplicate data is not allowed.");
+            if (await helpers.CheckProductExists(productCreation.ProductName)) return Conflict("Duplicate data is not allowed.");
             product.Id = id;
             context.Entry(product).State = EntityState.Modified;
             await context.SaveChangesAsync();

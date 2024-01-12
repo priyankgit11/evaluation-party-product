@@ -16,37 +16,32 @@ namespace EvaluationPartyProduct.Controllers
     [Authorize]
     public class AssignPartyController : ControllerBase
     {
-        public EvaluationDbContext context { get; }
+        private readonly EvaluationDbContext context;
+        private readonly ControllerHelperFunctions helpers;
         private readonly IMapper mapper;
         public AssignPartyController(EvaluationDbContext Context, IMapper mapper)
         {
-            context = Context;
+            this.context = Context;
             this.mapper = mapper;
-        }
-        public async Task<bool> checkAssignExists(AssignPartyCreationDTO assignPartyCreationDTO)
-        {
-            var assignParty = await context.TblAssignParties.FirstOrDefaultAsync(i=> i.PartyId == assignPartyCreationDTO.PartyId && i.ProductId == assignPartyCreationDTO.ProductId );
-            if(assignParty == null)
-                return false;
-            return true;
+            helpers = new ControllerHelperFunctions(this.context);
         }
         [HttpGet]
-        public async Task<List<AssignPartyRelationDTO>> Get()
+        public async Task<List<AssignPartyRelationDTO>> GetAssignParty()
         {
-            var assignParties = await context.TblAssignParties.Include(i=>i.Party).Include(i=>i.Product).ToListAsync();
+            var assignParties = await context.TblAssignParties.Include(i => i.Party).Include(i => i.Product).ToListAsync();
             var assignPartiesDTO = mapper.Map<List<AssignPartyRelationDTO>>(assignParties);
             return assignPartiesDTO;
         }
         [HttpGet("{id:int}", Name = "getAssignParty")]
-        public async Task<ActionResult<AssignPartyRelationDTO>> Get(int id)
+        public async Task<ActionResult<AssignPartyRelationDTO>> GetSpecificAssignParty(int id)
         {
-            var assignParty = await context.TblAssignParties.Include(i=>i.Party).Include(i=>i.Product).FirstOrDefaultAsync(i=>i.Id == id);
+            var assignParty = await context.TblAssignParties.Include(i => i.Party).Include(i => i.Product).FirstOrDefaultAsync(i => i.Id == id);
             if (assignParty == null) return NoContent();
             var assignPartyDTO = mapper.Map<AssignPartyRelationDTO>(assignParty);
             return Ok(assignPartyDTO);
         }
         [HttpGet("byParty/{id}", Name = "ByParty")]
-        public async Task<ActionResult<List<AssignPartyRelationDTO>>> GetByParty(int id)
+        public async Task<ActionResult<List<AssignPartyRelationDTO>>> GetAssignPartyByParty(int id)
         {
             var assignParties = await context.TblAssignParties.Where(i => i.PartyId == id).ToListAsync();
             if (assignParties == null) return NoContent();
@@ -54,7 +49,7 @@ namespace EvaluationPartyProduct.Controllers
             return Ok(assignPartiesDTO);
         }
         [HttpGet("byProduct/{id}", Name = "ByProduct")]
-        public async Task<ActionResult<List<AssignPartyRelationDTO>>> GetByProduct(int id)
+        public async Task<ActionResult<List<AssignPartyRelationDTO>>> GetAssignPartyByProduct(int id)
         {
             var assignParties = await context.TblAssignParties.Where(i => i.ProductId == id).ToListAsync();
             if (assignParties == null) return NoContent();
@@ -62,10 +57,10 @@ namespace EvaluationPartyProduct.Controllers
             return Ok(assignPartiesDTO);
         }
         [HttpPost]
-        public async Task<ActionResult<AssignPartyRelationDTO>> Post([FromBody] AssignPartyCreationDTO assignPartyCreation)
+        public async Task<ActionResult<AssignPartyRelationDTO>> PostAssignParty([FromBody] AssignPartyCreationDTO assignPartyCreation)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (await checkAssignExists(assignPartyCreation)) return Conflict("Duplicate data not allowed");
+            if (await helpers.CheckAssignExists(assignPartyCreation)) return Conflict("Duplicate data not allowed");
             var assignParty = mapper.Map<TblAssignParty>(assignPartyCreation);
             context.TblAssignParties.Add(assignParty);
             await context.SaveChangesAsync();
@@ -73,7 +68,7 @@ namespace EvaluationPartyProduct.Controllers
             return new CreatedAtRouteResult("getAssignParty", new { Id = productRateDTO.Id }, productRateDTO);
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> DeleteAssignParty(int id)
         {
             var assignParty = await context.TblAssignParties.FirstOrDefaultAsync(i => i.Id == id);
             if (assignParty == null) return NotFound();
@@ -82,26 +77,12 @@ namespace EvaluationPartyProduct.Controllers
             return Ok();
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] AssignPartyCreationDTO assignPartyCreation)
+        public async Task<ActionResult> PutAssignParty(int id, [FromBody] AssignPartyCreationDTO assignPartyCreation)
         {
-            if (await checkAssignExists(assignPartyCreation)) return Conflict("Duplicate data not allowed");
+            if (await helpers.CheckAssignExists(assignPartyCreation)) return Conflict("Duplicate data not allowed");
             var assignParty = mapper.Map<TblAssignParty>(assignPartyCreation);
             assignParty.Id = id;
             context.Entry(assignParty).State = EntityState.Modified;
-            await context.SaveChangesAsync();
-            return NoContent();
-        }
-        [HttpPatch("{id}")]
-        public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<AssignPartyCreationDTO> patchDocument)
-        {
-            if (patchDocument == null) return BadRequest();
-            var entityFromDB = await context.TblAssignParties.FirstOrDefaultAsync(x => x.Id == id);
-            if (entityFromDB == null) return NotFound();
-            var entityDTO = mapper.Map<AssignPartyCreationDTO>(entityFromDB);
-            patchDocument.ApplyTo(entityDTO, ModelState);
-            var isValid = TryValidateModel(entityDTO);
-            if (!isValid) return BadRequest(ModelState);
-            mapper.Map(entityDTO, entityFromDB);
             await context.SaveChangesAsync();
             return NoContent();
         }

@@ -2,6 +2,7 @@
 using EvaluationPartyProduct.Models;
 using Microsoft.AspNetCore.Mvc;
 using EvaluationPartyProduct.DTO;
+using EvaluationPartyProduct.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,39 +17,18 @@ namespace EvaluationPartyProduct.Controllers
     public class InvoiceController : ControllerBase
     {
         private EvaluationDbContext context;
+        private ControllerHelperFunctions helpers;
         private readonly IMapper mapper;
 
         public InvoiceController(IMapper mapper, EvaluationDbContext context)
         {
             this.context = context;
             this.mapper = mapper;
+            helpers = new ControllerHelperFunctions(this.context);
         }
-
-        public async Task CalculateGrandTotals(List<InvoiceDTO> invoiceDTO)
-        {
-            foreach (var item in invoiceDTO)
-            {
-                var invoiceDetails = await context.TblInvoiceDetails.Where(i => i.InvoiceId == item.Id).ToListAsync();
-                decimal gt = 0;
-                invoiceDetails.ForEach(i =>
-                {
-                    gt += i.Rate * i.Quantity;
-                });
-                item.GrandTotal = gt;
-            }
-        }
-
-        public void CalculateTotals(List<InvoiceDetailDTO> invoiceDetailDTO)
-        {
-            invoiceDetailDTO.ForEach(i =>
-            {
-                i.Total = i.Rate * i.Quantity;
-            });
-        }
-
         [HttpGet]
-        public async Task<ActionResult<List<InvoiceDTO>>> Get([FromQuery] string searchProducts = "", [FromQuery(Name = "order[0][column]")] int sortColumn = 0, int start = 0, int length = 10, [FromQuery(Name = "search[value]")] string search = "",
-        [FromQuery(Name = "order[0][dir]")] string sortDirection = "asc", [FromQuery] string startDate = "", [FromQuery] string endDate = "")
+        public async Task<ActionResult<List<InvoiceDTO>>> GetInvoice([FromQuery] string searchProducts = "", [FromQuery(Name = "order[0][column]")] int sortColumn = 0, int start = 0, int length = 10, [FromQuery(Name = "search[value]")] string search = "",
+[FromQuery(Name = "order[0][dir]")] string sortDirection = "asc", [FromQuery] string startDate = "", [FromQuery] string endDate = "")
         {
             var invoiceDetails = context.TblInvoiceDetails.Include(i => i.Invoice).ThenInclude(i => i.Party).Include(p => p.Product).Where(p => p.Invoice.Party.PartyName.Contains(search));
 
@@ -75,7 +55,7 @@ namespace EvaluationPartyProduct.Controllers
             var invoiceList = await invoices.ToListAsync();
             //var result = await invoices.Skip(start).Take(length).ToListAsync();
             var invoiceDTO = mapper.Map<List<InvoiceDTO>>(invoiceList);
-            await CalculateGrandTotals(invoiceDTO);
+            await helpers.CalculateGrandTotals(invoiceDTO);
             switch (sortColumn)
             {
                 case 1:
@@ -144,7 +124,7 @@ namespace EvaluationPartyProduct.Controllers
         }
 
         [HttpGet("InvoiceDetails")]
-        public async Task<ActionResult<List<InvoiceDetailDTO>>> GetDetails([FromQuery] int page = 1, [FromQuery] int pageSize = 1, [FromQuery] string filter = "", bool sort = true)
+        public async Task<ActionResult<List<InvoiceDetailDTO>>> GetInvoiceDetails([FromQuery] int page = 1, [FromQuery] int pageSize = 1, [FromQuery] string filter = "", bool sort = true)
         {
             if (page > pageSize || page <= 0 || pageSize <= 0)
             {
@@ -168,30 +148,30 @@ namespace EvaluationPartyProduct.Controllers
 
             var invoiceDetails = await query.ToListAsync();
             var invoicesDetailDTO = mapper.Map<List<InvoiceDetailDTO>>(invoiceDetails);
-            CalculateTotals(invoicesDetailDTO);
+            helpers.CalculateTotals(invoicesDetailDTO);
             return Ok(invoiceDetails);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<List<InvoiceDetailDTO>>> Get(int id)
+        public async Task<ActionResult<List<InvoiceDetailDTO>>> GetSpecificInvoice(int id)
         {
             var invoices = await context.TblInvoices.Include(i => i.Party).Where(i => i.Id == id).ToListAsync();
             if (invoices == null) return NoContent();
             var invoiceDTO = mapper.Map<List<InvoiceDTO>>(invoices);
-            await CalculateGrandTotals(invoiceDTO);
+            await helpers.CalculateGrandTotals(invoiceDTO);
             return Ok(invoiceDTO);
         }
         [HttpGet("details/{id:int}")]
-        public async Task<ActionResult<List<InvoiceDetailDTO>>> GetDetails(int id)
+        public async Task<ActionResult<List<InvoiceDetailDTO>>> GetInvoiceDetailsByInvoice(int id)
         {
             var invoiceDetails = await context.TblInvoiceDetails.Include(i => i.Invoice).ThenInclude(i => i.Party).Include(i => i.Product).Where(i => i.InvoiceId == id).ToListAsync();
             if (invoiceDetails == null) return NoContent();
             var invoiceDetailDTO = mapper.Map<List<InvoiceDetailDTO>>(invoiceDetails);
-            CalculateTotals(invoiceDetailDTO);
+            helpers.CalculateTotals(invoiceDetailDTO);
             return Ok(invoiceDetailDTO);
         }
-        [HttpGet("InvoiceDetails/{id:int}", Name = "getInvoiceDetails")]
-        public async Task<ActionResult<InvoiceDetailDTO>> GetDetail(int id)
+        [HttpGet("InvoiceDetail/{id:int}", Name = "getInvoiceDetail")]
+        public async Task<ActionResult<InvoiceDetailDTO>> GetSpecificInvoiceDetail(int id)
         {
             var invoiceDetail = await context.TblInvoiceDetails.Include(i => i.Invoice).ThenInclude(i => i.Party).Include(i => i.Product).Where(i => i.Id == id).FirstOrDefaultAsync();
             if (invoiceDetail == null) return NoContent();
@@ -199,7 +179,7 @@ namespace EvaluationPartyProduct.Controllers
             return Ok(invoiceDetailDTO);
         }
         [HttpPost]
-        public async Task<ActionResult<InvoiceDTO>> Post([FromBody] InvoiceCreationDTO invoiceCreation)
+        public async Task<ActionResult<InvoiceDTO>> PostInvoice([FromBody] InvoiceCreationDTO invoiceCreation)
         {
             if (!ModelState.IsValid) return BadRequest();
             var invoice = mapper.Map<TblInvoice>(invoiceCreation);
@@ -216,7 +196,7 @@ namespace EvaluationPartyProduct.Controllers
             return Ok(invoiceDTO);
         }
         [HttpPost("InvoiceDetails")]
-        public async Task<ActionResult<InvoiceDetailDTO>> Post([FromBody] InvoiceDetailCreationDTO invoiceDetailCreation)
+        public async Task<ActionResult<InvoiceDetailDTO>> PostInvoiceDetail([FromBody] InvoiceDetailCreationDTO invoiceDetailCreation)
         {
             if (!ModelState.IsValid) return BadRequest();
             var invoiceDetail = mapper.Map<TblInvoiceDetail>(invoiceDetailCreation);
@@ -227,7 +207,7 @@ namespace EvaluationPartyProduct.Controllers
             return Ok(invoiceDetailDTO);
         }
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> DeleteInvoice(int id)
         {
             var invoice = await context.TblInvoices.FirstOrDefaultAsync(i => i.Id == id);
             if (invoice == null) return BadRequest();
@@ -236,7 +216,7 @@ namespace EvaluationPartyProduct.Controllers
             return NoContent();
         }
         [HttpDelete("InvoiceDetails/{id:int}")]
-        public async Task<ActionResult> DeleteDetails(int id)
+        public async Task<ActionResult> DeleteInvoiceDetail(int id)
         {
             var invoiceDetail = await context.TblInvoiceDetails.FirstOrDefaultAsync(i => i.Id == id);
             if (invoiceDetail == null) return BadRequest();
@@ -245,7 +225,7 @@ namespace EvaluationPartyProduct.Controllers
             return NoContent();
         }
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int id, [FromBody] InvoiceCreationDTO invoiceCreation)
+        public async Task<ActionResult> PutInvoice(int id, [FromBody] InvoiceCreationDTO invoiceCreation)
         {
             var invoice = mapper.Map<TblInvoice>(invoiceCreation);
             invoice.Id = id;
@@ -254,7 +234,7 @@ namespace EvaluationPartyProduct.Controllers
             return NoContent();
         }
         [HttpPut("InvoiceDetails/{id:int}")]
-        public async Task<ActionResult> PutDetail(int id, [FromBody] InvoiceDetailCreationDTO invoiceDetailCreation)
+        public async Task<ActionResult> PutInvoiceDetail(int id, [FromBody] InvoiceDetailCreationDTO invoiceDetailCreation)
         {
             var invoiceDetail = mapper.Map<TblInvoiceDetail>(invoiceDetailCreation);
             invoiceDetail.Id = id;

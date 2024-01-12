@@ -375,51 +375,6 @@
       });
     }
 
-    $(document).on("submit", "#createForm", function (e) {
-      e.preventDefault();
-      const data = collectInvoiceData();
-      console.log("Clicked Button", clickedButtonId);
-      if (clickedButtonId === "btn-add") {
-        $.ajax({
-          type: "POST",
-          url: `${origin}/api/Invoice/InvoiceDetails`,
-          data: JSON.stringify(data),
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          dataType: "json",
-          success: function () {
-            editTable.ajax.url(getDynamicURL()).load();
-            $(".div-btn-add").show();
-            $(".div-btn-edit").hide();
-          },
-          error: function (err) {
-            console.error(err);
-          },
-        });
-      } else {
-        $.ajax({
-          type: "PUT",
-          url: `${origin}/api/Invoice/InvoiceDetails/${editInvoiceDetailId}`,
-          data: JSON.stringify(data),
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          dataType: "json",
-          success: function () {
-            editTable.ajax.url(getDynamicURL()).load();
-            $(".div-btn-add").show();
-            $(".div-btn-edit").hide();
-          },
-          error: function (err) {
-            console.error(err);
-          },
-        });
-      }
-    });
-
     // INITIALIZE DATABASE
     function initializeDatatable() {
       table = $("#addDataTable").DataTable({

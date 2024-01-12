@@ -19,7 +19,7 @@ namespace EvaluationPartyProduct.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration configuration;
-        private EvaluationDbContext context;
+        private readonly EvaluationDbContext context;
         private readonly IMapper mapper;
 
         public AuthController(IMapper mapper, EvaluationDbContext context, IConfiguration configuration)
@@ -28,7 +28,7 @@ namespace EvaluationPartyProduct.Controllers
             this.mapper = mapper;
             this.configuration = configuration;
         }
-        public async Task<bool> checkUserExists(UserDTO userDTO)
+        public async Task<bool> CheckUserExists(UserDTO userDTO)
         {
             var user = await context.TblUsers.FirstOrDefaultAsync(i => i.Username == userDTO.Username && i.Password == userDTO.Password);
             if (user == null) return false;
@@ -39,7 +39,7 @@ namespace EvaluationPartyProduct.Controllers
         public async Task<ActionResult<string>> Register(UserDTO userDTO)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (await checkUserExists(userDTO)) return Conflict("Duplicate data is not allowed.");
+            if (await CheckUserExists(userDTO)) return Conflict("Duplicate data is not allowed.");
             var user = mapper.Map<TblUser>(userDTO);
             context.Add(user);
             await context.SaveChangesAsync();

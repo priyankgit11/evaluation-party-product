@@ -128,17 +128,21 @@
               placeholder="Select end date"
             />
           </div>
-          <select class="form-control" id="selectDropdown" multiple="multiple">
-            <!-- Add more options as needed -->
-          </select>
+          <select
+            class="form-control"
+            id="selectDropdown"
+            multiple="multiple"
+          ></select>
         </div>
 
-        <table
-          width="100%"
-          id="dtExample"
-          class="display"
-          cellspacing="0"
-        ></table>
+        <div class="my-2">
+          <table
+            width="100%"
+            id="dtExample"
+            class="display my-2"
+            cellspacing="0"
+          ></table>
+        </div>
       </div>
     </div>
     <!-- MODAL -->
@@ -272,6 +276,7 @@
     var IGrandTotal = 0;
     var table = $("#dtExample").DataTable({
       dom: "Bfrtip",
+      suppressWarnings: true,
       ajax: {
         type: "GET",
         url: `${origin}/api/Invoice`,
@@ -337,7 +342,6 @@
       ],
 
       paging: true,
-      suppressWarnings: true,
       info: true,
       language: {
         emptyTable: "No data available",
@@ -583,7 +587,7 @@
 
     function setEditData() {
       $.ajax({
-        url: `${origin}/api/Invoice/InvoiceDetails/${editInvoiceDetailId}`,
+        url: `${origin}/api/Invoice/InvoiceDetail/${editInvoiceDetailId}`,
         type: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -777,7 +781,7 @@
     const deleteInvoiceDetailConfirmation = function (id) {
       $.ajax({
         type: "GET",
-        url: `${origin}/api/Invoice/InvoiceDetails/${id}`,
+        url: `${origin}/api/Invoice/InvoiceDetail/${id}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
