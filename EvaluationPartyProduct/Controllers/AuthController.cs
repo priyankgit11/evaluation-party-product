@@ -45,7 +45,7 @@ namespace EvaluationPartyProduct.Controllers
             await context.SaveChangesAsync();
             return await Login(userDTO);
         }
-        [HttpPost("login",Name ="loginUser")]
+        [HttpPost("login", Name = "loginUser")]
         public async Task<ActionResult<string>> Login(UserDTO userDTO)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -58,7 +58,7 @@ namespace EvaluationPartyProduct.Controllers
         {
             List<Claim> claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Username) };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings:Token").Value!));
-            var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha512);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
             // Create a JWT token with claims, expiration, and signing credentials
             var token = new JwtSecurityToken(
                 claims: claims,
@@ -66,7 +66,6 @@ namespace EvaluationPartyProduct.Controllers
                 signingCredentials: creds
             );
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
             return jwt;
         }
     }
